@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+
+{% block content %}
+
+<div class="intro">
+Calyx is a compiler infrastructure for languages that target hardware
+accelerators.
+Calyx's control language simplifies encoding of high-level semantics.
+The Calyx compiler automatically optimizes and lowers programs into
+synthesizable hardware designs.
+</div>
+
+<section>
+<h1>
+  Frontends
+</h1>
+
+<div class="frontends">
+<div class="frontend">
+<div class="logo" style="background-image:url('/img/dahlia-logo.png')">
+</div>
+<div class="content">
+<h3>
+Dahlia
+</h3>
+Dahlia is an imperative, loop-based programming language for generating
+hardware accelerators.
+</div>
+</div>
+
+<div class="frontend">
+<div class="logo" style="background-image:url('/img/systolic.png')">
+</div>
+<div class="content">
+<h3>
+Systolic Array
+</h3>
+Systolic arrays are the class of architectures that power AI chips like
+Google's TPUs.
+</div>
+</div>
+
+<div class="frontend">
+<div class="logo" style="background-image:url('/img/logo-tvm.png')">
+</div>
+<div class="content">
+<h3>
+TVM
+</h3>
+TVM is a compiler for machine learning frameworks that can optimize and
+target kernels to several different backends.
+</div>
+</div>
+
+</div>
+</section>
+
+<section>
+<h1>
+  Language
+</h1>
+
+<div class="lang-examples">
+
+<div class="example">
+<div class="summary">
+<h2>
+Components
+</h2>
+<p>
+Components are the basic building block of Calyx programs. A component
+has three sections: <em>cells</em>, <em>wires</em>, and <em>control</em>.
+An empty component does nothing.
+</p>
+</div>
+<div class="code">
+<pre>
+<code>component main() -> () {
+  cells {
+    c = prim std_reg(32); // A 32-bit register
+  }
+  wires { }
+  control { }
+}
+</pre>
+</code>
+</div>
+</div>
+
+
+<div class="example">
+<div class="summary">
+<h2>
+Cells
+</h2>
+<p>
+The <em>cells</em> section instantiates sub-components like adders and registers.
+These sub-components can be used in this component to define behaviour.
+</p>
+</div>
+<div class="code">
+<pre>
+<code>component main() -> () {
+  cells {
+    c = prim std_reg(32); // A 32-bit register
+  }
+  wires { }
+  control { }
+}
+</pre>
+</code>
+</div>
+</div>
+
+<div class="example">
+<div class="summary">
+<h2>
+Guarded Assignments
+</h2>
+<p>
+<strong>TODO</strong>
+</p>
+</div>
+<div class="code">
+<pre>
+<code>component main() -> () {
+  cells {
+    c = prim std_reg(32); // A 32-bit register
+  }
+  wires { }
+  control { }
+}
+</pre>
+</code>
+</div>
+</div>
+
+<div class="example">
+<div class="summary">
+<h2>
+Groups & Control
+</h2>
+<p>
+<strong>TODO</strong>
+</p>
+</div>
+<div class="code">
+<pre>
+<code>component main() -> () {
+  cells {
+    c = prim std_reg(32); // A 32-bit register
+  }
+  wires { }
+  control { }
+}
+</pre>
+</code>
+</div>
+</div>
+
+<div class="example">
+<div class="summary">
+<h2>
+Counter
+</h2>
+<p>
+<strong>TODO</strong>
+</p>
+</div>
+<div class="code">
+<pre>
+<code>component main() -> () {
+  cells {
+    c = prim std_reg(32); // A 32-bit register
+  }
+  wires { }
+  control { }
+}
+</pre>
+</code>
+</div>
+</div>
+
+</div>
+</section>
+
+{% endblock content %}
