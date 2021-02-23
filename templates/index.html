@@ -71,7 +71,6 @@
             </div>
         </div>
 
-
         <div class="example">
             <div class="summary">
                 <h2>
@@ -83,9 +82,10 @@
                 </p>
             </div>
             <div class="code language-futil">
-<pre><code>component main() -> () {
+<pre data-line="2-4"><code>component main() -> () {
   cells {
-    c = prim std_reg(32); // A 32-bit register
+    // A 32-bit register
+    c = prim std_reg(32);
   }
   wires { }
   control { }
@@ -106,14 +106,18 @@
                 </p>
             </div>
             <div class="code language-futil">
-<pre><code>component main() -> () {
+<pre data-line="10-11,14,16"><code>component main() -> () {
   cells {
-    b = prim std_reg(1); // A 1-bit register
-    c = prim std_reg(32); // A 32-bit register
+    // A 1-bit register
+    b = prim std_reg(1);
+    // A 32-bit register
+    c = prim std_reg(32);
   }
   wires {
-    b.in = 1d'1; // write a 1-bit constant to b
+    // write a 1-bit constant to b
+    b.in = 1d'1;
     b.write_en = 1'd1;
+
     // write 1 when b.out == 1
     c.in = b.out ? 32'd1;
     // write 2 when b.out == 0
@@ -132,14 +136,15 @@
                 <p>
                     A <em>group</em> is a collection
                     of assignments that are only active when the group is run from
-                    the control program. The <em>write_c[done]</em> port is a special
+                    the control program. The <code>write_c[done]</code> port is a special
                     port defined on groups that signify when the group has finished.
                 </p>
             </div>
             <div class="code language-futil">
 <pre><code>component main() -> () {
   cells {
-    c = prim std_reg(32); // A 32-bit register
+    // A 32-bit register
+    c = prim std_reg(32);
   }
   wires {
     group write_c {

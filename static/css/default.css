@@ -70,16 +70,16 @@
   }
   .example {
     display: flex;
+    flex-direction: row;
   }
   .example > .summary {
-    flex: 1 100%;
-    width: 50%;
-    float: left;
+      flex: 1 1 0;
+      width: 0;
     /* max-width: 400px; */
   }
   .example > .code {
-    flex: 1 100%;
-    width: 50%;
+      flex: 1 1 0;
+      width: 100%;
   }
   .example > .code {
     margin-left: 1em;
@@ -90,6 +90,7 @@
 /********** Content *********/
 section {
   margin-top: 3em;
+  width: 100%;
 }
 
 a {
