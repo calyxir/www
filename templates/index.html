@@ -63,16 +63,11 @@
                 </p>
             </div>
             <div class="code">
-                <pre>
-                    <code>component main() -> () {
-  cells {
-    c = prim std_reg(32); // A 32-bit register
-  }
+<pre><code>component main() -> () {
+  cells { }
   wires { }
   control { }
-}
-                </pre>
-                    </code>
+}</pre></code>
             </div>
         </div>
 
@@ -88,87 +83,127 @@
                 </p>
             </div>
             <div class="code">
-                <pre>
-                    <code>component main() -> () {
+<pre><code>component main() -> () {
   cells {
     c = prim std_reg(32); // A 32-bit register
   }
   wires { }
   control { }
-}
-                </pre>
-                    </code>
+}</pre></code>
+            </div>
+        </div>
+
+        <div class="example">
+            <div class="summary">
+                <h2>Assignments & Guards</h2>
+                <p>
+                    The <em>wires</em> section specifies connections to cells. They are continuously active by default
+                    and work like <em>non-blocking</em> assignments in RTL.
+                </p>
+                <p>
+                    Guarded assignments have a boolean expression that controls when the assignment
+                    should be active.
+                </p>
+            </div>
+            <div class="code">
+<pre><code>component main() -> () {
+  cells {
+    b = prim std_reg(1); // A 1-bit register
+    c = prim std_reg(32); // A 32-bit register
+  }
+  wires {
+    b.in = 1d'1; // write a 1-bit constant to b
+    b.write_en = 1'd1;
+    c.in = b.out ? 32'd1; // write 1 when b.out == 1
+    c.in = !b.out ? 32'd2; // write 2 when b.out == 0
+  }
+  control { }
+}</pre></code>
             </div>
         </div>
 
         <div class="example">
             <div class="summary">
                 <h2>
-                    Guarded Assignments
+                    Groups
                 </h2>
                 <p>
-                    <strong>TODO</strong>
+                    A <em>group</em> is a collection
+                    of assignments that are only active when the group is run from
+                    the control program. The <em>write_c[done]</em> port is a special
+                    port defined on groups that signify when the group has finished.
                 </p>
             </div>
             <div class="code">
-                <pre>
-                    <code>component main() -> () {
+<pre><code>component main() -> () {
   cells {
     c = prim std_reg(32); // A 32-bit register
   }
-  wires { }
+  wires {
+    group write_c {
+      c.in = 32'd1;
+      c.write_en = 32'd1;
+      write_c[done] = c.done; // group is done when reg is done
+    }
+  }
   control { }
-}
-                </pre>
-                    </code>
+}</pre></code>
             </div>
         </div>
 
         <div class="example">
             <div class="summary">
                 <h2>
-                    Groups & Control
+                    Control
                 </h2>
                 <p>
-                    <strong>TODO</strong>
+                    The control language specifies the order to run
+                    groups. The language has the normal imperative
+                    control flow operators: <code>seq</code>, <code>if</code>, and <code>while</code>.
+                    It also has <code>par</code> to express parallel composition.
                 </p>
             </div>
             <div class="code">
-                <pre>
-                    <code>component main() -> () {
+                <pre><code>component main() -> () {
   cells {
-    c = prim std_reg(32); // A 32-bit register
+    a = prim std_reg(32);
+    b = prim std_reg(32);
   }
-  wires { }
-  control { }
-}
-                </pre>
-                    </code>
+  wires {
+    group write_a { ... }
+    group read_a { ... }
+    group write_b { ... }
+  }
+  control {
+    seq {
+      write_a;
+      par {
+        read_a;
+        write_b;
+      }
+    }
+  }
+}</pre></code>
             </div>
         </div>
 
-        <div class="example">
-            <div class="summary">
-                <h2>
-                    Counter
-                </h2>
-                <p>
-                    <strong>TODO</strong>
-                </p>
-            </div>
-            <div class="code">
-                <pre>
-                    <code>component main() -> () {
-  cells {
-    c = prim std_reg(32); // A 32-bit register
-  }
-  wires { }
-  control { }
-}
-                </pre>
-                    </code>
-            </div>
-        </div>
+        <!-- <div class="example">
+             <div class="summary">
+             <h2>Counter</h2>
+             <p>
+             <strong>TODO</strong>
+             </p>
+             </div>
+             <div class="code">
+             <pre><code>component main() -> () {
+             cells {
+             c = prim std_reg(32); // A 32-bit register
+             }
+             wires { }
+             control { }
+             }</pre></code>
+             </div>
+             </div> -->
 
     </div>
 </section>
