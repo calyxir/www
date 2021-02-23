@@ -290,12 +290,13 @@ pre {
   border-radius: 5px;
   max-width: 600px;
   padding-left: 1em;
+  box-shadow: 5px 5px 0px 1px lightgrey;
+  border: 1px solid lightgrey;
 }
 
 pre {
   background-color: #fffff8;
   /* background-color: red; */
-  border-left: 2px solid #aaa;
 }
 
 th,
