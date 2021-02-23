@@ -62,7 +62,7 @@
                     An empty component does nothing.
                 </p>
             </div>
-            <div class="code">
+            <div class="code language-futil">
 <pre><code>component main() -> () {
   cells { }
   wires { }
@@ -82,7 +82,7 @@
                     These sub-components can be used in this component to define behaviour.
                 </p>
             </div>
-            <div class="code">
+            <div class="code language-futil">
 <pre><code>component main() -> () {
   cells {
     c = prim std_reg(32); // A 32-bit register
@@ -105,7 +105,7 @@
                     should be active.
                 </p>
             </div>
-            <div class="code">
+            <div class="code language-futil">
 <pre><code>component main() -> () {
   cells {
     b = prim std_reg(1); // A 1-bit register
@@ -136,7 +136,7 @@
                     port defined on groups that signify when the group has finished.
                 </p>
             </div>
-            <div class="code">
+            <div class="code language-futil">
 <pre><code>component main() -> () {
   cells {
     c = prim std_reg(32); // A 32-bit register
@@ -166,7 +166,7 @@
                     It also has <code>par</code> to express parallel composition.
                 </p>
             </div>
-            <div class="code">
+            <div class="code language-futil">
                 <pre><code>component main() -> () {
   cells {
     a = prim std_reg(32);
@@ -197,7 +197,7 @@
              <strong>TODO</strong>
              </p>
              </div>
-             <div class="code">
+             <div class="code language-futil">
              <pre><code>component main() -> () {
              cells {
              c = prim std_reg(32); // A 32-bit register
