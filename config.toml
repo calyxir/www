@@ -23,19 +23,7 @@ news_items = 5
 
 # Links to author webpages
 author = [
-  { name = "Vincent Lee", link = "https://www.linkedin.com/in/vincent-lee-15685425" },
-  { name = "Alexa VanHattum", link = "https://www.cs.cornell.edu/~avh/" },
-  { name = "James Bornholt", link = "https://www.cs.utexas.edu/~bornholt/" },
   { name = "Samuel Thomas", link = "https://sgtpeacock.com/" },
-  { name = "Zhijing Li", link = "https://tissue3.github.io/" },
-  { name = "Ted Bauer", link = "https://tedbauer.github.io/" },
   { name = "Adrian Sampson", link = "http://adriansampson.net" },
-  { name = "Zhiru Zhang", link = "http://www.csl.cornell.edu/~zhiruz/" },
-  { name = "Arjun Guha", link = "http://people.cs.umass.edu/arjun" },
-  { name = "Sam Baxter", link = "https://baxtersa.github.io/about/" },
-  { name = "Shriram Krishnamurthi", link = "http://cs.brown.edu/~sk/" },
-  { name = "Joe Gibbs Politz", link = "https://jpolitz.github.io/" },
-  { name = "Jean-Baptiste Jeannin", link = "https://jeannin.github.io/" },
   { name = "Yuwei Ye", link = "https://www.viviyye.com/" },
-  { name = "Sachille Atapattu", link = "https://www.csl.cornell.edu/~sachille/"}
 ]
