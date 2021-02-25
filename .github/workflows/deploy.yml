@@ -16,7 +16,6 @@ jobs:
           sudo snap install --edge zola
           zola build
       - name: rsync
-        if: ${{github.event_name=='push' && github.ref=='refs/heads/master'}}
         env:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
