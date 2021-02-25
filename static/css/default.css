@@ -71,6 +71,7 @@
   .example {
     display: flex;
     flex-direction: row;
+    margin: 2em 0;
   }
   .example > .summary {
       flex: 1 1 0;
@@ -209,14 +210,15 @@ footer {
 
 html, button, input, select, textarea {
   /* font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif; */
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', serif;
   font-size: 15px;
   font-weight: 400;
 }
 
 body {
   /* font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif; */
-    font-family: 'Inter', sans-serif;
+    /* font-family: 'Inter', sans-serif; */
+    font-family: 'Inter', serif;
   font-weight: 400;
   font-size: 15px;
   line-height: 1.4;
