@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calyx | A Compiler Infrastructure for Accelerator Generators</title>
 
+  <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <link rel="stylesheet" href={{ get_url(path="css/normalize.css") }}>
@@ -25,14 +27,20 @@
     <script src={{ get_url(path="js/prism.js") }}></script>
     <script src={{ get_url(path="js/prism-futil.js") }}></script>
     <header>
-    <a class="unstyled-link" href={{get_url(path="/")}}>
-        <img src={{ get_url(path="img/logo-text.svg") }} alt="" />
-        <!-- <h1 class="name">Calyx</h1> -->
+    <a class="unstyled-link" href="/">
+        <img class="main-logo" src={{ get_url(path="img/logo-text.svg") }} alt="" />
     </a>
     <h3>
     A Compiler Infrastructure for Accelerator Generators
     </h3>
-  </header>
+    <hr/>
+    <nav>
+      <a class="nav-item" href="https://rachitnigam.com/files/pubs/calyx.pdf">Paper</a>
+      <a class="nav-item" href="https://github.com/cucapra/calyx">Code</a>
+      <a class="nav-item" href="https://capra.cs.cornell.edu/docs/calyx/">Documentation</a>
+      <a class="nav-item" href="https://futil-demo.sgtpeacock.com/">Playground</a>
+    </nav>
+    </header>
   <section class="section">
     <div class="container">
       {% block content %}
@@ -41,7 +49,7 @@
   </section>
 
 <footer>
-  &copy;&nbsp;2021 Capra &middot; Built using <a href="https://www.getzola.org/">Zola</a>
+  &copy;&nbsp;2021 The Calyx Team &middot; Built using <a href="https://www.getzola.org/">Zola</a>
 </footer>
 </body>
 

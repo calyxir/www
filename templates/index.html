@@ -29,7 +29,7 @@
             <div class="logo" style="background-image:url({{get_url(path="img/systolic.png")}})">
             </div>
             <div class="content">
-                <a href="https://capra.cs.cornell.edu/calyx/frontends/systolic-array.html"><h3>Systolic Array &#187;</h3></a>
+                <a href="https://capra.cs.cornell.edu/docs/calyx/frontends/systolic-array.html"><h3>Systolic Array &#187;</h3></a>
                 Systolic arrays are the class of architectures that power AI chips like
                 Google's TPUs.
             </div>
@@ -39,7 +39,7 @@
             <div class="logo" style="background-image:url({{get_url(path="img/logo-tvm.png")}})">
             </div>
             <div class="content">
-                <a href="https://tvm.apache.org/"><h3>TVM &#187;</h3></a>
+                <a href="https://github.com/cucapra/calyx/tree/master/frontends/relay"><h3>TVM &#187;</h3></a>
                 TVM is a compiler for machine learning frameworks that can optimize and
                 target kernels to several different backends.
             </div>
@@ -85,7 +85,7 @@
 <pre data-line="2-5"><code>component main() -> () {
   cells {
     // A 32-bit register
-    c = prim std_reg(32);
+    c = std_reg(32);
   }
   wires { }
   control { }
@@ -109,9 +109,9 @@
 <pre data-line="10-11,14,16"><code>component main() -> () {
   cells {
     // A 1-bit register
-    b = prim std_reg(1);
+    b = std_reg(1);
     // A 32-bit register
-    c = prim std_reg(32);
+    c = std_reg(32);
   }
   wires {
     // write a 1-bit constant to b
@@ -144,12 +144,12 @@
 <pre data-line="7-12"><code>component main() -> () {
   cells {
     // A 32-bit register
-    c = prim std_reg(32);
+    c = std_reg(32);
   }
   wires {
     group write_c {
       c.in = 32'd1;
-      c.write_en = 32'd1;
+      c.write_en = 1'd1;
       // group is done when reg is done
       write_c[done] = c.done;
     }
@@ -174,8 +174,8 @@
             <div class="code language-futil">
 <pre data-line="11-19"><code>component main() -> () {
   cells {
-    a = prim std_reg(32);
-    b = prim std_reg(32);
+    a = std_reg(32);
+    b = std_reg(32);
   }
   wires {
     group write_a { ... }
