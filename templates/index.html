@@ -149,7 +149,7 @@
   wires {
     group write_c {
       c.in = 32'd1;
-      c.write_en = 32'd1;
+      c.write_en = 1'd1;
       // group is done when reg is done
       write_c[done] = c.done;
     }
