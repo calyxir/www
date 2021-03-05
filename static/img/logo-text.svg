@@ -30,16 +30,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.88492567"
-     inkscape:cx="52.1547"
-     inkscape:cy="14.763212"
+     inkscape:zoom="4"
+     inkscape:cx="172.87888"
+     inkscape:cy="101.71642"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
-     inkscape:window-width="1600"
-     inkscape:window-height="836"
+     inkscape:window-width="2560"
+     inkscape:window-height="1403"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -61,7 +61,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -92,11 +92,6 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30.24px;font-family:'URW Gothic';-inkscape-font-specification:'URW Gothic, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.756002"
          id="path907" />
     </g>
-    <path
-       style="fill:none;fill-opacity:1;stroke:#7c9d31;stroke-width:2.06375;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 77.128247,67.630722 -0.07222,23.431477"
-       id="path981"
-       sodipodi:nodetypes="cc" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -127,5 +122,23 @@
          id="path849"
          sodipodi:nodetypes="cccc" />
     </g>
+    <rect
+       style="fill:#7c9d31;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:5;stroke-dasharray:none"
+       id="rect846"
+       width="0.96525574"
+       height="20.907024"
+       x="76.090775"
+       y="70.160263"
+       ry="0"
+       rx="0" />
+    <rect
+       style="fill:#92b93b;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:5;stroke-dasharray:none"
+       id="rect846-2"
+       width="0.96525574"
+       height="20.907024"
+       x="77.05603"
+       y="70.160263"
+       ry="0"
+       rx="0" />
   </g>
 </svg>
