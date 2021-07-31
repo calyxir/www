@@ -58,6 +58,18 @@ to enable easier validation.
 Some day we would like to support more FPGA boards and infrastructures, but that is very contingent
 on somebody coming along with the desire to write and maintain these backends.
 
+## Calyx's place in CIRCT
+
+CIRCT (Circuit IR Compilers and Tools) is an effort to apply the principles used in MLIR and LLVM to the domain of hardware design. One aspect that the project could benefit greatly from is execution schedule and control flow optimizations, a cornerstone of the Calyx IR. Currently, a MLIR dialect is being developed to provide these benefits, and provide a universal compiler platform for Calyx.
+
+## Number Theoretic Transform (NTT)
+
+The number theoretic transform (NTT) is a generalization of the fast Fourier transform, commonly used to speed up computer arithmetic such as multiplication of larger degree polynomials. Like many hardware-based designs, there are components that may run in parallel, while others must run sequentially. With a Calyx execution schedule, this can easily be imagined, given a well-defined execution schedule. The NTT pipeline generator produces the NTT transform of some input with the provided bit width and input array size parameters. However, using the term “pipeline” is misconceiving. The emitted Calyx program will execute exactly once, with no actual pipelining. Providing first class support for pipelines in Calyx is still a work in progress.
+
+## TVM Relay as a frontend
+
+TVM is a compiler for machine learning frameworks that can optimize and target kernels to several different backends. The TVM framework incorporates Relay, a high level IR with an objective to replace old computation graph based Its with a more expressive IR. A goal was laid out to simulate a neural network lowered from the TVM Relay to Calyx. This required quite a few intermediary steps, such as implementing a fixed point library. To avoid writing each extensive operator such as `conv2d` in the Calyx language, we instead used Dahlia as a frontend to carry some of the heavy lifting. In [Calyx #504](https://github.com/cucapra/calyx/pull/504), we semi-successfully simulated a Lenet network model. A patch is still required for a new-and-improved `exp` operator, which currently is defined using a Taylor Series approximation, and has no bounds checks.
+
 - Sam
   + Fud
   + FPGA execution
