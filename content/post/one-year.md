@@ -1,81 +1,148 @@
 +++
-title = "One year of Calyx"
+title = "Growing an Open-Source Hardware Infrastructure"
 date = 2021-07-15
 draft = true
 +++
 
-A blog post to celebrate one year since the submission of the original Calyx
-paper.
+It's been roughly one year since the submission of the [original Calyx
+paper][calyx-paper].
+In that time, we've continued building tons of new tools, frontends, and
+integrations.
 
-## Outine
+## Simplifying the Hardware Workflow
 
-It's been a whole year since we first submitted the Calyx paper! In that time,
-we've made progress on several different fronts.
+Calyx is a compiler infrastructure that needs to interact with frontends
+(languages that generate Calyx IR) and backends (mechanisms to run Calyx
+generated code).
 
-## Improvements with tooling
+A simple workflow that goes from [Dahlia][] (a C-like frontend) to simulation
+through [Verilator][] involves tediously running several commands.
+```bash
+dahlia/fuse -b calyx --lower -l error -o out.futil # Generate Calyx IR from Dahlia
+calyx/futil -b verilog out.futil -o out.sv         # Generate Verilog from Calyx IR
+verilator -cc --trace out.sv --exe testbench.cpp \ # Compile Verilog with Verilator
+  --exe --build --top-module main
+./Vmain   # Execute the Verilator model
+```
 
-Because Calyx is a compiler infrastructure, there are many different tools
-and compilers that need to be called in order to transform a high-level program
-into Verilog that can be synthesized and simulated. We created a tool called `fud`
-that drastically streamlines the experience of working with these tools.
+Furthermore, every time there is change in the input Dahlia file, all of the
+commands need to be re-executed.
+It's easy to see why getting into hardware design can be so daunting.
 
-It is built around a concept we call "stages". Each stage is responsible for taking
-one input format into another. For example, we have a Dahlia stage that is responsible
-transforming `.fuse` files into Calyx files, and a Verilog stage that compiles Calyx files
-into SystemVerilog.
-
-To use `fud`, simply specify an input file, the input stage, and the desired output stage:
+In an effort to provide a seamless command-line tool that makes it easy for
+novices to use and interact with hardware design tools, we built [`fud`][fud].
+Fud is built around the idea of "stages" which provide a way for transforming
+a set of input files (say a Dahlia source file) into output files (say a file
+with Calyx IR).
+Fud can also chain sequences of stages to transform files several times.
+For example, the following `fud` command runs all the necessary steps to
+compile a Dahlia source file through Calyx and simulate it with Verilator:
 ```
 fud exec input.fuse --from dahlia --to verilog
 ```
-and `fud` seamlessly stitches all the stages together.
 
-The tool is written in python and can be easily extended to support more frontends and backends.
+Fud also makes it easy to switch between outputs making debugging at different
+levels a breeze:
+```
+fud exec input.fuse --from dahlia --to calyx
+```
 
-## Calyx on real hardware
+The tool is written in python and can be easily extended to support more
+frontends and backends.
 
-In our paper, we ran Vivado synthesis on various benchmarks to gather resource usage information.
-However, we never actually ran these designs on real silicon. In the past year, we have set up
-the basic infrastructure to get Calyx running on Xilinx FPGAs. There is still a lot of work to be
-done, but what we have so far is exciting step towards realizing Calyx as infrastructure that people can
-actually use.
+## Calyx on FPGAs
 
-Xilinx FGPA boards expect kernels to implement an AXI slave interface so that a host can start
-a kernel and pass memory address arguments. We wrote a relatively simple interface wrapper
-(if you know AXI you know that the word relatively is doing a lot of heavy lifting) that translates AXI commands into
-the `go/done` style interface that Calyx components expect as well as copies memory into local BRAMs
-that Calyx components can access. The wrapper is written in Verilog because Calyx doesn't easily support
-these types of interfaces. In the future, we are interested in extending Calyx to support this.
-Doing so might allow us to verify the correctness of the AXI implementation more easily.
+Our original paper on Calyx ran Vivado's place and route tool to gather
+resource usage estimates.
+Since then, we've put in the effort to get Calyx generated designs running on
+real FPGA boards.
+This represents an exciting step towards realizing Calyx as an infrastructure
+for rapid development of domain-specific languages that generate hardware
+designs.
 
-The Xilinx tools require several different metadata files alongside the (System)Verilog source. We
-automated the creation of these files with `fud` to make interacting with these tools more seamless.
-The only piece of the puzzle that is manual at the moment is writing OpenCL host code to integrate
-the kernel into an application. While we are not looking to completely automate writing the host code,
-we would like to write a generic host that understands the same data format we use for simulation
-to enable easier validation.
+In order to support Xilinx FPGAs, we implemented an AXI interface so that host
+programs can communicate with kernels running on an FPGA.
+We wrote a interface wrapper in Verilog that translates AXI commands into the `go/done`
+style interface that Calyx components expect as well as copies memory into
+local BRAMs that Calyx components can access them.
 
-Some day we would like to support more FPGA boards and infrastructures, but that is very contingent
-on somebody coming along with the desire to write and maintain these backends.
+The Xilinx tools require several different metadata files alongside the Verilog
+source.
+We automated the creation of these files with `fud` to make interacting with
+these tools more seamless.
+The only piece of the puzzle that is manual at the moment is writing OpenCL
+host code to integrate the kernel into an application.
+While we are not looking to completely automate writing the host code, we would
+like to write a generic host that understands the same data format we use for
+simulation to enable easier validation.
 
-## Calyx's place in CIRCT
+While we are able to support the specific Xilinx boards, we do not yet have a
+general solution.
+A missing piece in the puzzle is a generic interface and intermediate
+representation that can target arbitrary boards.
+Thankfully, our collaborators at the University of Washington have been
+developing [exactly this][reticle].
 
-CIRCT (Circuit IR Compilers and Tools) is an effort to apply the principles used in MLIR and LLVM to the domain of hardware design. One aspect that the project could benefit greatly from is execution schedule and control flow optimizations, a cornerstone of the Calyx IR. Currently, a MLIR dialect is being developed to provide these benefits, and provide a universal compiler platform for Calyx.
+## New Frontends
 
-## Number Theoretic Transform (NTT)
+Calyx's development as a language and an infrastructure is driven by frontends
+that make use of it.
+Since the publication of our paper, we have implemented two new frontends that
+can be used to stress test Calyx.
 
-The number theoretic transform (NTT) is a generalization of the fast Fourier transform, commonly used to speed up computer arithmetic such as multiplication of larger degree polynomials. Like many hardware-based designs, there are components that may run in parallel, while others must run sequentially. With a Calyx execution schedule, this can easily be imagined, given a well-defined execution schedule. The NTT pipeline generator produces the NTT transform of some input with the provided bit width and input array size parameters. However, using the term “pipeline” is misconceiving. The emitted Calyx program will execute exactly once, with no actual pipelining. Providing first class support for pipelines in Calyx is still a work in progress.
+### TVM Relay
 
-## TVM Relay as a frontend
+[TVM][] is a compiler for machine learning frameworks that can optimize and
+target kernels to several different backends.
+Our TVM frontend compiles TVM's internal IR, called Relay, to Calyx IR, and
+can successfully simulate small neural networks.
+Relay instructions are quite high-level, implementing operators such as a
+two-dimensional convolution.
+In order to side-step manually generating such operators in Calyx and to
+simplify debugging, we instead generate Dahlia programs to implement these
+operators.
 
-TVM is a compiler for machine learning frameworks that can optimize and target kernels to several different backends. The TVM framework incorporates Relay, a high level IR with an objective to replace old computation graph based Its with a more expressive IR. A goal was laid out to simulate a neural network lowered from the TVM Relay to Calyx. This required quite a few intermediary steps, such as implementing a fixed point library. To avoid writing each extensive operator such as `conv2d` in the Calyx language, we instead used Dahlia as a frontend to carry some of the heavy lifting. In [Calyx #504](https://github.com/cucapra/calyx/pull/504), we semi-successfully simulated a Lenet network model. A patch is still required for a new-and-improved `exp` operator, which currently is defined using a Taylor Series approximation, and has no bounds checks.
+In [Calyx #504](https://github.com/cucapra/calyx/pull/504), we successfully
+simulated a [LeNet][] network model.
+Of course LeNet is an extremely simple neural network and our long-term goal
+is to support modern networks.
+Our next target is the [VGG][] network.
+However, we've also realized while building this network that simple,
+Verilator-based simulation is going to be too slow so we're also working
+on other efforts like running Calyx on an FPGA and building a fast simulator
+for Calyx itself.
 
-- Sam
-  + Fud
-  + FPGA execution
-- Chris
-  + Relay, NTT, TCAM
-  + MLIR integration
+### Number Theoretic Transform (NTT)
+
+The number theoretic transform (NTT) is a generalization of the fast Fourier
+transform, commonly used as a primitive in homomorphic cryptography.
+We implemented an NTT pipeline generator produces the NTT transform of some
+input with the provided bit width and input array size parameters.
+
+
+## Calyx + CIRCT
+
+[CIRCT][] (Circuit IR Compilers and Tools) is a cross-community effort to build
+an open-source hardware ecosystem using the [MLIR][] framework.
+The MLIR framework represents compilation as a series of transformations between
+"dialects" or languages at different levels of abstractions.
+In the long-term, the CIRCT community is interested in compiling high-level
+languages to hardware designs, which is something Calyx can already do today.
+In order to align our efforts, we've started implementing a [Calyx dialect][calyx-dialect]
+which can be emitted from other dialects in CIRCT, transformed by the Calyx compiler,
+and of course, integrated with `fud`.
+
 - Griffin
   + Resource Unsharing
   + Interpreter
+
+[lenet]: https://en.wikipedia.org/wiki/LeNet
+[vgg]: https://neurohive.io/en/popular-networks/vgg16/
+[calyx-paper]: https://rachitnigam.com/files/pubs/calyx.pdf
+[mlir]: https://mlir.llvm.org/
+[circt]: https://github.com/llvm/circt
+[calyx-dialect]: https://github.com/llvm/circt/tree/46ae6df8eb30c0404a0cc54f92a68a63ef643c89/test/Dialect/Calyx
+[reticle]: https://github.com/vegaluisjose/reticle
+[dahlia]: https://capra.cs.cornell.edu/dahlia/
+[verilator]: https://www.veripool.org/verilator/
+[tvm]: https://github.com/apache/tvm
