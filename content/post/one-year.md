@@ -132,9 +132,116 @@ In order to align our efforts, we've started implementing a [Calyx dialect][caly
 which can be emitted from other dialects in CIRCT, transformed by the Calyx compiler,
 and of course, integrated with `fud`.
 
-- Griffin
-  + Resource Unsharing
-  + Interpreter
+
+## New Optimization Pass: Register Unsharing
+
+Yes you read that right, _unsharing_. But please hold your ire for a moment, I
+promise there is a method to my madness. The Calyx compiler already has
+optimization passes to share computation resources such as registers and adders.
+This pass does the opposite for registers: if a single register has independent
+uses then the pass separates each of the uses into their own unique register
+without changing the program semantics.
+
+At first blush, this seems like non-sense. For one, what is the point of either
+the resource sharing pass or the register unsharing pass if they undo each
+other? Why have both? And, secondly, isn't sharing resources good? Why would we
+want to use _more_ registers?
+
+These are valid and reasonable concerns; however we must remember that in the
+world of hardware there are always trade-offs. When thinking about sharing and
+unsharing we really ought to be thinking of a trade-off between computational
+units/resources and control wiring. Sharing reduces the resources a given design
+requires however it does so at the cost of increasing the wiring complexity and
+the control structures needed to arbitrate access to the shared resources.
+Unsharing, in contrast, moves the trade-off in an opposite direction. It
+increases the resource requirements of a design but reduces the wiring
+complexity by requiring fewer MUXes.
+
+There are no universally "correct" places on this trade-off curve. FPGAs have a
+set amount of resources per block and so up to a certain point it can be better
+to have more registers rather than more MUXes while the opposite holds for
+taping out a design.
+
+(XXX: This last bit might not contribute anything interesting. It's all
+technical detail)
+
+The optimization pass itself takes the form of a reaching definition analysis
+for the register uses, but unlike the conventional form of this analysis, Calyx
+assignments present a slight wrinkle. Assignments in Calyx can be guarded, which
+means even if a particular group runs, it is not necessarily the case that a
+given assignment will actually occur. Furthermore, since assignments are
+non-blocking and thus not strictly ordered, disambiguating different definitions
+within the same group ends up being far beyond the scope of a static dataflow
+analysis. As a final domain wrinkle, Calyx groups can appear multiple times in
+the control structure which means any re-writes to the group in one place must
+be valid in all places, though this can be sidestepped by deduplicating the
+groups.
+
+In order to make the pass appropriately conservative, we have to frame groups in
+terms of "must-write" and "may-read". We can only kill definitions if a group
+"must-write" a given register, but doesn't read it. Re-writing is similarly
+restricted. For the moment "must-write" is an overly simple criterion since it
+is only true for unguarded assignments. A more sophisticated form of the
+analysis may be able to make this judgment for groups with multiple
+(complementary) guarded assignments within a single group.
+
+## Calyx Interpreter
+
+Another major infrastructure tool that's been under-development is a native
+interpreter for Calyx. It might seem a bit strange to be working on an
+interpreter given that Calyx already has a compiler; typically language
+development starts with an interpreter and moves to a compiler later as they are
+far more efficient. Indeed from the viewpoint of conventional language design,
+this appears entirely backward! Nevertheless, an interpreter holds the
+solution to many problems: from simulation complexity and massive tool-chains
+to compiler pass validation and semantic under-specification.
+
+This is best illustrated by thinking of the interpreter not as an interpreter,
+in the PL sense of the word, but as a native simulator for the Calyx IR. An
+interpreter means we have a way to run Calyx code directly rather than needing
+to transform it into SystemVerilog and run it through Verilator. This opens a
+number of opportunities for tools that work with Calyx in its native form and
+can take advantage of the control information present in higher-level Calyx
+code.
+
+Of perhaps chief interest is making an efficient simulator for Calyx that is
+capable of simulating larger designs from the TVM front-end. And there is reason
+to be confident that such a thing is possible. For one, having a shorter
+toolchain is good both for overall timing and for usability. It presently takes
+running three compilers and a binary in order to get simulated results from an
+input Calyx program (Calyx -> SV, SV -> Verilated C++, C++ -> binary). Having
+that toolchain contain just the Calyx interpreter means fewer dependencies and
+fewer compiler invocations which stand to make the end-to-end simulation time
+faster.
+
+But beyond mere toolchain improvements, the control information in Calyx may
+make simulation more efficient. A common problem in circuit simulation is that a
+large portion of the circuit is not running at any given time but still must be
+simulated. There are many clever heuristics for identifying the dormant parts of
+the design and saving time by not simulating them; however Calyx needs no such
+heuristics. The control structure in Calyx code means that we know precisely
+what parts of the design are running at any given moment and needn't waste time
+simulating portions of the circuit which are known to be dormant.
+
+Furthermore there are performance gains to be had when we consider that the
+Calyx IR itself has less simulation complexity than the RTL it generates. Since
+the information available at the IR level is more structured, the simulation
+itself is free of the complex details that appear at the RTL layer. While it is
+by no means guaranteed, there are strong signals to suggest that a fast
+simulator for Calyx programs is possible.
+
+Additionally, we may be able to design better debugging tools which use Calyx
+directly, such tools could use control information to be more intuitive than
+waveform debugging and hopefully far more approachable. We may even be able to
+make a "gdb for hardware"!
+
+As a final note, a simulator is also a boon both for the language itself and the
+core compiler infrastructure. Being able to run Calyx programs directly means we
+can perform differential testing on compiler passes and verify that the given
+changes made by a pass are indeed semantic preserving with respect to the input
+program. Plus, the act of making the interpreter itself is an excellent way of
+"hardening" the semantics of the language as it requires making clear decisions
+on corner cases obscured by the translation to Verilog.
 
 [lenet]: https://en.wikipedia.org/wiki/LeNet
 [vgg]: https://neurohive.io/en/popular-networks/vgg16/
