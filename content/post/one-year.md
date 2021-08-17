@@ -133,57 +133,46 @@ which can be emitted from other dialects in CIRCT, transformed by the Calyx comp
 and of course, integrated with `fud`.
 
 
-## New Optimization Pass: Register Unsharing
+## Control-Directed Optimizations: Register Unsharing
 
-Yes you read that right, _unsharing_. But please hold your ire for a moment, I
-promise there is a method to my madness. The Calyx compiler already has
-optimization passes to share computation resources such as registers and adders.
-This pass does the opposite for registers: if a single register has independent
-uses then the pass separates each of the uses into their own unique register
-without changing the program semantics.
+Calyx's strength is in its ability to represent *both* the structure and the
+control flow of a hardware accelerator.
+Apart from simplifying the design of frontends, this also enables unique
+new optimizations that we've termed control-directed hardware optimizations.
+These optimizations are truly unique to Calyx---the compiler needs to have
+both an understanding of the control flow and the structural representation
+to implement them.
 
-At first blush, this seems like non-sense. For one, what is the point of either
-the resource sharing pass or the register unsharing pass if they undo each
-other? Why have both? And, secondly, isn't sharing resources good? Why would we
-want to use _more_ registers?
+One such optimization is register unsharing.
+Yes you read that right, *unsharing*. But please hold your ire for a moment, I
+promise there is a method to my madness.
+In compilers like LLVM (and Calyx), register allocation (or register
+sharing) passes aim to reduce the usage of registers in a hardware design.
+Owing to the multi-objective design space, certain hardware designs, such as
+ones targeting FPGAs may want to do the opposite---use more registers in
+order to simplify other circuitry.
 
-These are valid and reasonable concerns; however we must remember that in the
-world of hardware there are always trade-offs. When thinking about sharing and
-unsharing we really ought to be thinking of a trade-off between computational
-units/resources and control wiring. Sharing reduces the resources a given design
-requires however it does so at the cost of increasing the wiring complexity and
-the control structures needed to arbitrate access to the shared resources.
+Sharing reduces the resources a given design requires; however, it does so at
+the cost of increasing the wiring complexity.
+Each "shared" instance of a register requires a multiplexer (or a mux) to arbitrate
+access to it.
 Unsharing, in contrast, moves the trade-off in an opposite direction. It
-increases the resource requirements of a design but reduces the wiring
-complexity by requiring fewer MUXes.
+increases the number of registers in a design but reduces the wiring
+complexity by requiring fewer multiplexers.
 
 There are no universally "correct" places on this trade-off curve. FPGAs have a
 set amount of resources per block and so up to a certain point it can be better
-to have more registers rather than more MUXes while the opposite holds for
+to have more registers rather than more multiplexers while the opposite holds for
 taping out a design.
 
-(XXX: This last bit might not contribute anything interesting. It's all
-technical detail)
-
-The optimization pass itself takes the form of a reaching definition analysis
-for the register uses, but unlike the conventional form of this analysis, Calyx
-assignments present a slight wrinkle. Assignments in Calyx can be guarded, which
-means even if a particular group runs, it is not necessarily the case that a
-given assignment will actually occur. Furthermore, since assignments are
-non-blocking and thus not strictly ordered, disambiguating different definitions
-within the same group ends up being far beyond the scope of a static dataflow
-analysis. As a final domain wrinkle, Calyx groups can appear multiple times in
-the control structure which means any re-writes to the group in one place must
-be valid in all places, though this can be sidestepped by deduplicating the
-groups.
-
-In order to make the pass appropriately conservative, we have to frame groups in
-terms of "must-write" and "may-read". We can only kill definitions if a group
-"must-write" a given register, but doesn't read it. Re-writing is similarly
-restricted. For the moment "must-write" is an overly simple criterion since it
-is only true for unguarded assignments. A more sophisticated form of the
-analysis may be able to make this judgment for groups with multiple
-(complementary) guarded assignments within a single group.
+The [optimization pass][register-sharing] itself uses a Calyx-specific version
+of a reaching definitions analysis that accounts for Calyx's guarded
+assignments.
+The reaching definition can be used to calculate groups that "must-write" and
+"may-read" to registers and use this information to rewrite groups to unshare
+registers.
+For more technical details about the implementation please take a look at the
+[pull request][register-sharing-pr].
 
 ## Calyx Interpreter
 
@@ -191,49 +180,37 @@ Another major infrastructure tool that's been under-development is a native
 interpreter for Calyx. It might seem a bit strange to be working on an
 interpreter given that Calyx already has a compiler; typically language
 development starts with an interpreter and moves to a compiler later as they are
-far more efficient. Indeed from the viewpoint of conventional language design,
-this appears entirely backward! Nevertheless, an interpreter holds the
-solution to many problems: from simulation complexity and massive tool-chains
-to compiler pass validation and semantic under-specification.
+far more efficient. Nevertheless, a Calyx interpreter represents an exciting
+development for the Calyx ecosystem allowing us to address many different
+problems: from reducing simulation complexity to verifying compiler passes.
 
-This is best illustrated by thinking of the interpreter not as an interpreter,
-in the PL sense of the word, but as a native simulator for the Calyx IR. An
-interpreter means we have a way to run Calyx code directly rather than needing
-to transform it into SystemVerilog and run it through Verilator. This opens a
-number of opportunities for tools that work with Calyx in its native form and
-can take advantage of the control information present in higher-level Calyx
-code.
+Currently, the primary way to quickly run Calyx code is by compiling it
+to Verilog and using [Verilator][] to simulate it.
+In process, however, we end up losing all of the control information represent
+in the original Calyx program which can be used to optimize simulation.
+We expect that by using the higher-level control information information in
+the Calyx program, we can improve simulation speeds by an order of magnitude.
 
-Of perhaps chief interest is making an efficient simulator for Calyx that is
-capable of simulating larger designs from the TVM front-end. And there is reason
-to be confident that such a thing is possible. For one, having a shorter
-toolchain is good both for overall timing and for usability. It presently takes
-running three compilers and a binary in order to get simulated results from an
-input Calyx program (Calyx -> SV, SV -> Verilated C++, C++ -> binary). Having
-that toolchain contain just the Calyx interpreter means fewer dependencies and
-fewer compiler invocations which stand to make the end-to-end simulation time
-faster.
-
-But beyond mere toolchain improvements, the control information in Calyx may
-make simulation more efficient. A common problem in circuit simulation is that a
+A common problem in circuit simulation is that a
 large portion of the circuit is not running at any given time but still must be
 simulated. There are many clever heuristics for identifying the dormant parts of
 the design and saving time by not simulating them; however Calyx needs no such
 heuristics. The control structure in Calyx code means that we know precisely
 what parts of the design are running at any given moment and needn't waste time
 simulating portions of the circuit which are known to be dormant.
+Furthermore, Calyx IR itself has less simulation complexity than the RTL it
+generates.
+Since the information available at the IR level is more structured, the
+simulation itself is free of the complex details that appear at the RTL layer.
 
-Furthermore there are performance gains to be had when we consider that the
-Calyx IR itself has less simulation complexity than the RTL it generates. Since
-the information available at the IR level is more structured, the simulation
-itself is free of the complex details that appear at the RTL layer. While it is
-by no means guaranteed, there are strong signals to suggest that a fast
-simulator for Calyx programs is possible.
-
-Additionally, we may be able to design better debugging tools which use Calyx
-directly, such tools could use control information to be more intuitive than
-waveform debugging and hopefully far more approachable. We may even be able to
-make a "gdb for hardware"!
+A Calyx interpreter will let us develop a better debugging infrastructure
+with support for traditional tools like breakpoints, pausing execution, and
+dumping internal state.
+Today, when designing debuggers for hardware, developers have to trade-off between
+the fast but opaque simulation on FPGAs or slow but transparent simulation in
+software simulation.
+A Calyx interpreter represents the best of both worlds, enabling faster and
+transparent execution.
 
 As a final note, a simulator is also a boon both for the language itself and the
 core compiler infrastructure. Being able to run Calyx programs directly means we
@@ -242,6 +219,12 @@ changes made by a pass are indeed semantic preserving with respect to the input
 program. Plus, the act of making the interpreter itself is an excellent way of
 "hardening" the semantics of the language as it requires making clear decisions
 on corner cases obscured by the translation to Verilog.
+
+---
+
+If any of these directions excite you, or you're just interested in using
+Calyx as a backend, please [reach out to us][calyx-gh-disc]! We'd love hear
+from you.
 
 [lenet]: https://en.wikipedia.org/wiki/LeNet
 [vgg]: https://neurohive.io/en/popular-networks/vgg16/
@@ -253,3 +236,7 @@ on corner cases obscured by the translation to Verilog.
 [dahlia]: https://capra.cs.cornell.edu/dahlia/
 [verilator]: https://www.veripool.org/verilator/
 [tvm]: https://github.com/apache/tvm
+[register-sharing]: https://github.com/cucapra/calyx/blob/master/calyx/src/passes/register_unsharing.rs
+[register-sharing-pr]: https://github.com/cucapra/calyx/pull/511
+[chisel-sim]: https://scottbeamer.net/pubs/beamer-dac2020.pdf
+[calyx-gh-disc]: https://github.com/cucapra/calyx/discussions
