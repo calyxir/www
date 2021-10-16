@@ -20,10 +20,3 @@ skip_prefixes = [
 
 [extra]
 news_items = 5
-
-# Links to author webpages
-author = [
-  { name = "Samuel Thomas", link = "https://sgtpeacock.com/" },
-  { name = "Adrian Sampson", link = "http://adriansampson.net" },
-  { name = "Yuwei Ye", link = "https://www.viviyye.com/" },
-]

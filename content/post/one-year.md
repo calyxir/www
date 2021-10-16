@@ -1,7 +1,7 @@
 +++
 title = "Growing an Open-Source Hardware Infrastructure"
 date = 2021-07-15
-draft = true
+draft = false
 +++
 
 It's been roughly one year since the submission of the [original Calyx
@@ -18,11 +18,15 @@ generated code).
 A simple workflow that goes from [Dahlia][] (a C-like frontend) to simulation
 through [Verilator][] involves tediously running several commands.
 ```bash
-dahlia/fuse -b calyx --lower -l error -o out.futil # Generate Calyx IR from Dahlia
-calyx/futil -b verilog out.futil -o out.sv         # Generate Verilog from Calyx IR
-verilator -cc --trace out.sv --exe testbench.cpp \ # Compile Verilog with Verilator
+# Generate Calyx IR from Dahlia
+% dahlia/fuse -b calyx --lower -l error -o out.futil
+# Generate Verilog from Calyx IR
+% calyx/futil -b verilog out.futil -o out.sv
+# Compile Verilog using Verilator
+% verilator -cc --trace out.sv --exe testbench.cpp \
   --exe --build --top-module main
-./Vmain   # Execute the Verilator model
+# Execute the generated Verilator code.
+% ./Vmain   # Execute the Verilator model
 ```
 
 Furthermore, every time there is change in the input Dahlia file, all of the
@@ -37,14 +41,14 @@ with Calyx IR).
 Fud can also chain sequences of stages to transform files several times.
 For example, the following `fud` command runs all the necessary steps to
 compile a Dahlia source file through Calyx and simulate it with Verilator:
-```
-fud exec input.fuse --from dahlia --to verilog
+```bash
+% fud exec input.fuse --from dahlia --to verilog
 ```
 
 Fud also makes it easy to switch between outputs making debugging at different
 levels a breeze:
-```
-fud exec input.fuse --from dahlia --to calyx
+```bash
+% fud exec input.fuse --from dahlia --to calyx
 ```
 
 The tool is written in python and can be easily extended to support more
@@ -240,3 +244,4 @@ from you.
 [register-sharing-pr]: https://github.com/cucapra/calyx/pull/511
 [chisel-sim]: https://scottbeamer.net/pubs/beamer-dac2020.pdf
 [calyx-gh-disc]: https://github.com/cucapra/calyx/discussions
+[fud]: https://capra.cs.cornell.edu/docs/calyx/fud/index.html
