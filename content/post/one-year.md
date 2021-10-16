@@ -4,19 +4,57 @@ date = 2021-07-15
 draft = false
 +++
 
-It's been roughly one year since the submission of the [original Calyx
+John Hennessy and David Patterson's Turing lecture proclaimed that a new
+golden age of computer architecture is upon us---one where specialized hardware
+accelerators will become ubiquitous and replace general-purpose architectures
+for the most computationally demanding tasks.
+
+There is however, one small problem: designing hardware is hard, especially
+if you come from a software background.
+Hardware design languages operate with the low-level abstractions of gates,
+wires, and clocks cycles and rely on proprietary, vendor-locked toolchains to
+accomplish anything.
+While this *may* be acceptable for people designing state of the art processor
+chips, it is clearly untenable in the golden age of computer architecture where
+rapid iteration of hardware is going to be key.
+
+Our group at the Cornell believes that hardware design should be easy---instead
+of needing person-years of work to develop a simple accelerator, building one
+should be a simple weekend job.
+This vision mirrors the progression of software development---deploying a new
+website, service, or app is something software engineers consider to be boring,
+simple tasks that take a few line of python to accomplish.
+Hardware design should be the same.
+
+The first step towards this goal is designing new, high-level languages that
+abstract over the low-level details of hardware design and help programmers
+iterate on hardware accelerators quickly.
+We think that rapid innovation in language design is key for unlocking the true
+potential of hardware accelerators in the future.
+To further this goal, we've been building Calyx, a compiler infrastructure and
+ecosystem that supports new high-level languages for designing hardware
+accelerators.
+The equivalent of Calyx in the software world would be the LLVM compiler
+infrastructure that handles the "boring" aspects of building a language:
+optimization, debugging, testing, etc.
+
+Calyx aims to be the LLVM of [accelerator design languages][adl] and make it
+easier for researchers and practitioners to prototype new languages without
+having to build all the tedious machinery required to build a "real" language.
+This post is an overview of the infrastructure and ecosystem we're building
+around Calyx.
+It also celebrates roughly one year since the submission of the [original Calyx
 paper][calyx-paper].
-In that time, we've continued building tons of new tools, frontends, and
-integrations.
 
 ## Simplifying the Hardware Workflow
 
-Calyx is a compiler infrastructure that needs to interact with frontends
-(languages that generate Calyx IR) and backends (mechanisms to run Calyx
-generated code).
-
-A simple workflow that goes from [Dahlia][] (a C-like frontend) to simulation
-through [Verilator][] involves tediously running several commands.
+Hardware workflows are notoriously complicated, requiring invocation and
+chaining of dozens of commands before you get anything working.
+This problem is magnified when *compiling* high-level languages to hardware
+design languages since you need invoke even more tools.
+For example, here is the set of commands needed to simulate a hardware
+design written in [Dahlia][] (a C-like accelerator design language) with
+[Verilator][]:
 ```bash
 # Generate Calyx IR from Dahlia
 % dahlia/fuse -b calyx --lower -l error -o out.futil
@@ -29,40 +67,63 @@ through [Verilator][] involves tediously running several commands.
 % ./Vmain   # Execute the Verilator model
 ```
 
-Furthermore, every time there is change in the input Dahlia file, all of the
-commands need to be re-executed.
-It's easy to see why getting into hardware design can be so daunting.
+Every time the original Dahlia file is changed, these commands need to be
+re-run!
+Now consider that Calyx currently supports five frontends like Dahlia and
+four backends and the complexity of working with hardware toolchains becomes
+self-evident.
+Being an academic research group, this became a particular pain point for us
+since on boarding new students to the project required weeks of background
+learning about compilers, simulators, and funky CLI tools.
 
-In an effort to provide a seamless command-line tool that makes it easy for
-novices to use and interact with hardware design tools, we built [`fud`][fud].
-Fud is built around the idea of "stages" which provide a way for transforming
+We set out to address this using [`fud`][fud], a python-based hardware
+workflow manager.
+`fud` is built around the idea of "stages" which provide a way for transforming
 a set of input files (say a Dahlia source file) into output files (say a file
 with Calyx IR).
-Fud can also chain sequences of stages to transform files several times.
+`fud` can also chain sequences of stages to transform files several times.
 For example, the following `fud` command runs all the necessary steps to
 compile a Dahlia source file through Calyx and simulate it with Verilator:
 ```bash
-% fud exec input.fuse --from dahlia --to verilog
+% fud exec input.fuse --from dahlia --to dat \
+      -s verilog.data inputs.json
 ```
 
-Fud also makes it easy to switch between outputs making debugging at different
-levels a breeze:
+When given this command, `fud` invokes the right compiler toolchains, marshals
+input data to Verilator and generates output in a readable format.
+`fud` also makes it trivial to switch between various frontends and backends.
+For example, to simulate the same design with [Icarus Verilog][iverilog],
+we simplify run the command:
 ```bash
-% fud exec input.fuse --from dahlia --to calyx
+% fud exec input.fuse --from dahlia --to dat \
+      --through icarus-verilog -s verilog.data inputs.json
 ```
 
-The tool is written in python and can be easily extended to support more
-frontends and backends.
+We've built `fud` so that extending it with new frontends and backends is easy:
+you simply [write a python file][fud-external] that defines the stage
+transformation and register it with `fud`.
 
-## Calyx on FPGAs
+## Calyx on Field-Programmable Gate Arrays (FPGAs)
 
-Our original paper on Calyx ran Vivado's place and route tool to gather
-resource usage estimates.
-Since then, we've put in the effort to get Calyx generated designs running on
-real FPGA boards.
-This represents an exciting step towards realizing Calyx as an infrastructure
-for rapid development of domain-specific languages that generate hardware
-designs.
+Simulating a hardware design using software tools like [Verilator][] and making
+them run on an FPGA are two very different challenges.
+Running something on an FPGA requires generating the configuration files,
+host code, and circuitry to interface the design with a CPU controller.
+Over the last year, we've been working on an automated flow to run Calyx
+programs on FPGAs.
+This represents an exciting step in making Calyx a useful infrastructure for
+accelerator design languages---developers can focus on building new languages
+and Calyx will handle the tedious task of making things work on FPGAs.
+
+<figure>
+<img src="/img/baby_in_stars.png"
+     width="500px"
+     alt="Mandlebrot implementation in Calyx running on an FPGA." >
+</img>
+<figcaption>
+Mandlebrot implementation in Calyx running on an FPGA.
+</figcaption>
+</figure>
 
 In order to support Xilinx FPGAs, we implemented an AXI interface so that host
 programs can communicate with kernels running on an FPGA.
@@ -132,51 +193,18 @@ The MLIR framework represents compilation as a series of transformations between
 "dialects" or languages at different levels of abstractions.
 In the long-term, the CIRCT community is interested in compiling high-level
 languages to hardware designs, which is something Calyx can already do today.
-In order to align our efforts, we've started implementing a [Calyx dialect][calyx-dialect]
-which can be emitted from other dialects in CIRCT, transformed by the Calyx compiler,
-and of course, integrated with `fud`.
+In order to align our efforts, we've implemented a [Calyx
+dialect][calyx-dialect] which can be emitted from other dialects in CIRCT,
+transformed by the Calyx compiler, and of course, integrated with `fud`.
 
+The CIRCT developers have also implemented a [lowering pass][scf-to-calyx] that
+transforms programs in the [SCF dialect][scf], which represents parallel,
+imperative, loop-based programs, to Calyx.
+We're super excited about the future opportunities that this integration brings
+and will be building tons of new features using it.
+If you're excited about CIRCT and Calyx, you can start contributing to the
+[issues][calyx-circt-issues].
 
-## Control-Directed Optimizations: Register Unsharing
-
-Calyx's strength is in its ability to represent *both* the structure and the
-control flow of a hardware accelerator.
-Apart from simplifying the design of frontends, this also enables unique
-new optimizations that we've termed control-directed hardware optimizations.
-These optimizations are truly unique to Calyx---the compiler needs to have
-both an understanding of the control flow and the structural representation
-to implement them.
-
-One such optimization is register unsharing.
-Yes you read that right, *unsharing*. But please hold your ire for a moment, I
-promise there is a method to my madness.
-In compilers like LLVM (and Calyx), register allocation (or register
-sharing) passes aim to reduce the usage of registers in a hardware design.
-Owing to the multi-objective design space, certain hardware designs, such as
-ones targeting FPGAs may want to do the opposite---use more registers in
-order to simplify other circuitry.
-
-Sharing reduces the resources a given design requires; however, it does so at
-the cost of increasing the wiring complexity.
-Each "shared" instance of a register requires a multiplexer (or a mux) to arbitrate
-access to it.
-Unsharing, in contrast, moves the trade-off in an opposite direction. It
-increases the number of registers in a design but reduces the wiring
-complexity by requiring fewer multiplexers.
-
-There are no universally "correct" places on this trade-off curve. FPGAs have a
-set amount of resources per block and so up to a certain point it can be better
-to have more registers rather than more multiplexers while the opposite holds for
-taping out a design.
-
-The [optimization pass][register-sharing] itself uses a Calyx-specific version
-of a reaching definitions analysis that accounts for Calyx's guarded
-assignments.
-The reaching definition can be used to calculate groups that "must-write" and
-"may-read" to registers and use this information to rewrite groups to unshare
-registers.
-For more technical details about the implementation please take a look at the
-[pull request][register-sharing-pr].
 
 ## Calyx Interpreter
 
@@ -224,6 +252,50 @@ program. Plus, the act of making the interpreter itself is an excellent way of
 "hardening" the semantics of the language as it requires making clear decisions
 on corner cases obscured by the translation to Verilog.
 
+<!--
+## Control-Directed Optimizations: Register Unsharing
+
+Calyx's strength is in its ability to represent *both* the structure and the
+control flow of a hardware accelerator.
+Apart from simplifying the design of frontends, this also enables unique
+new optimizations that we've termed control-directed hardware optimizations.
+These optimizations are truly unique to Calyx---the compiler needs to have
+both an understanding of the control flow and the structural representation
+to implement them.
+
+One such optimization is register unsharing.
+Yes you read that right, *unsharing*. But please hold your ire for a moment, I
+promise there is a method to my madness.
+In compilers like LLVM (and Calyx), register allocation (or register
+sharing) passes aim to reduce the usage of registers in a hardware design.
+Owing to the multi-objective design space, certain hardware designs, such as
+ones targeting FPGAs may want to do the opposite---use more registers in
+order to simplify other circuitry.
+
+Sharing reduces the resources a given design requires; however, it does so at
+the cost of increasing the wiring complexity.
+Each "shared" instance of a register requires a multiplexer (or a mux) to arbitrate
+access to it.
+Unsharing, in contrast, moves the trade-off in an opposite direction. It
+increases the number of registers in a design but reduces the wiring
+complexity by requiring fewer multiplexers.
+
+There are no universally "correct" places on this trade-off curve. FPGAs have a
+set amount of resources per block and so up to a certain point it can be better
+to have more registers rather than more multiplexers while the opposite holds for
+taping out a design.
+
+The [optimization pass][register-sharing] itself uses a Calyx-specific version
+of a reaching definitions analysis that accounts for Calyx's guarded
+assignments.
+The reaching definition can be used to calculate groups that "must-write" and
+"may-read" to registers and use this information to rewrite groups to unshare
+registers.
+For more technical details about the implementation please take a look at the
+[pull request][register-sharing-pr].
+-->
+
+
 ---
 
 If any of these directions excite you, or you're just interested in using
@@ -245,3 +317,9 @@ from you.
 [chisel-sim]: https://scottbeamer.net/pubs/beamer-dac2020.pdf
 [calyx-gh-disc]: https://github.com/cucapra/calyx/discussions
 [fud]: https://capra.cs.cornell.edu/docs/calyx/fud/index.html
+[adl]: https://www.sigarch.org/hdl-to-adl/
+[iverilog]: http://iverilog.icarus.com/
+[fud-external]: https://capra.cs.cornell.edu/docs/calyx/fud/external.html
+[scf-to-calyx]: https://github.com/llvm/circt/issues/1777
+[scf]: https://mlir.llvm.org/docs/Dialects/SCFDialect/
+[calyx-circt-issues]: https://github.com/llvm/circt/labels/Calyx
