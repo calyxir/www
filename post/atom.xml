@@ -108,7 +108,7 @@ This represents an exciting step in making Calyx a useful infrastructure for
 accelerator design languages—developers can focus on building new languages
 and Calyx will handle the tedious task of making things work on FPGAs.&lt;&#x2F;p&gt;
 &lt;figure&gt;
-&lt;img src=&quot;&#x2F;img&#x2F;baby_in_stars.png&quot;
+&lt;img src=&quot;.&#x2F;baby_in_stars.png&quot;
      width=&quot;500px&quot;
      alt=&quot;Mandlebrot implementation in Calyx running on an FPGA.&quot; &gt;
 &lt;&#x2F;img&gt;
