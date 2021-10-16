@@ -116,7 +116,7 @@ accelerator design languages---developers can focus on building new languages
 and Calyx will handle the tedious task of making things work on FPGAs.
 
 <figure>
-<img src="/img/baby_in_stars.png"
+<img src="./baby_in_stars.png"
      width="500px"
      alt="Mandlebrot implementation in Calyx running on an FPGA." >
 </img>
