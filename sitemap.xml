@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://capra.cs.cornell.edu/calyx/</loc>
+        <loc>https://cucapra.github.io/calyx-site/</loc>
     </url>
     <url>
-        <loc>https://capra.cs.cornell.edu/calyx/post/</loc>
+        <loc>https://cucapra.github.io/calyx-site/post/</loc>
     </url>
     <url>
-        <loc>https://capra.cs.cornell.edu/calyx/post/one-year/</loc>
+        <loc>https://cucapra.github.io/calyx-site/post/one-year/</loc>
         <lastmod>2021-07-15</lastmod>
     </url>
 </urlset>

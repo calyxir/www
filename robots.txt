@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://capra.cs.cornell.edu/calyx/sitemap.xml
+Sitemap: https://cucapra.github.io/calyx-site/sitemap.xml
