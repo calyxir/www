@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Rachit Nigam">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calyx | A Compiler Infrastructure for Accelerator Generators</title>
+
+  <link rel="icon" href="https://capra.cs.cornell.edu/calyx/img/logo.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://capra.cs.cornell.edu/calyx/css/normalize.css">
+  <link rel="stylesheet" href="https://capra.cs.cornell.edu/calyx/css/default.css">
+  <link rel="stylesheet" type="text/css" href="https://capra.cs.cornell.edu/calyx/css/prism.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous"/>
+
+  
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="https://capra.cs.cornell.edu/calyx/post/atom.xml">
+  
+
+</head>
+
+<body>
+    <script src=https://capra.cs.cornell.edu/calyx/js/prism.js></script>
+    <script src=https://capra.cs.cornell.edu/calyx/js/prism-futil.js></script>
+    <header>
+      <a class="unstyled-link" href="https://capra.cs.cornell.edu/calyx">
+        <img class="main-logo" src="https://capra.cs.cornell.edu/calyx/img/logo-text.svg" alt="Calyx" />
+    </a>
+    <h3>
+    A Compiler Infrastructure for Accelerator Generators
+    </h3>
+    <hr/>
+    <nav>
+      <a class="nav-item" href="https://rachitnigam.com/files/pubs/calyx.pdf">Paper</a>
+      <a class="nav-item" href="https://github.com/cucapra/calyx">Code</a>
+      <a class="nav-item" href="https://capra.cs.cornell.edu/docs/calyx/">Documentation</a>
+      <a class="nav-item" href="https://github.com/cucapra/calyx/discussions">Discussions</a>
+      <a class="nav-item" href="https://capra.cs.cornell.edu/calyx-demo/">Playground</a>
+      <a class="nav-item" href="/post">Blog</a>
+    </nav>
+    </header>
+  <section class="section">
+    <div class="container">
+      
+<div class="post-header">
+<h1 class="title">
+  Growing an Open-Source Hardware Infrastructure
+</h1>
+<p class="date">July 15, 2021</p>
+</div>
+
+<div class="post">
+<p>It’s been roughly one year since the submission of the <a rel="noopener nofollow noreferrer" target="_blank" href="https://rachitnigam.com/files/pubs/calyx.pdf">original Calyx
+paper</a>.
+In that time, we’ve continued building tons of new tools, frontends, and
+integrations.</p>
+<h2 id="simplifying-the-hardware-workflow">Simplifying the Hardware Workflow</h2>
+<p>Calyx is a compiler infrastructure that needs to interact with frontends
+(languages that generate Calyx IR) and backends (mechanisms to run Calyx
+generated code).</p>
+<p>A simple workflow that goes from <a rel="noopener nofollow noreferrer" target="_blank" href="https://capra.cs.cornell.edu/dahlia/">Dahlia</a> (a C-like frontend) to simulation
+through <a rel="noopener nofollow noreferrer" target="_blank" href="https://www.veripool.org/verilator/">Verilator</a> involves tediously running several commands.</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># Generate Calyx IR from Dahlia
+% dahlia&#x2F;fuse -b calyx --lower -l error -o out.futil
+# Generate Verilog from Calyx IR
+% calyx&#x2F;futil -b verilog out.futil -o out.sv
+# Compile Verilog using Verilator
+% verilator -cc --trace out.sv --exe testbench.cpp \
+  --exe --build --top-module main
+# Execute the generated Verilator code.
+% .&#x2F;Vmain   # Execute the Verilator model
+</code></pre>
+<p>Furthermore, every time there is change in the input Dahlia file, all of the
+commands need to be re-executed.
+It’s easy to see why getting into hardware design can be so daunting.</p>
+<p>In an effort to provide a seamless command-line tool that makes it easy for
+novices to use and interact with hardware design tools, we built <a rel="noopener nofollow noreferrer" target="_blank" href="https://capra.cs.cornell.edu/docs/calyx/fud/index.html"><code>fud</code></a>.
+Fud is built around the idea of “stages” which provide a way for transforming
+a set of input files (say a Dahlia source file) into output files (say a file
+with Calyx IR).
+Fud can also chain sequences of stages to transform files several times.
+For example, the following <code>fud</code> command runs all the necessary steps to
+compile a Dahlia source file through Calyx and simulate it with Verilator:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">% fud exec input.fuse --from dahlia --to verilog
+</code></pre>
+<p>Fud also makes it easy to switch between outputs making debugging at different
+levels a breeze:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">% fud exec input.fuse --from dahlia --to calyx
+</code></pre>
+<p>The tool is written in python and can be easily extended to support more
+frontends and backends.</p>
+<h2 id="calyx-on-fpgas">Calyx on FPGAs</h2>
+<p>Our original paper on Calyx ran Vivado’s place and route tool to gather
+resource usage estimates.
+Since then, we’ve put in the effort to get Calyx generated designs running on
+real FPGA boards.
+This represents an exciting step towards realizing Calyx as an infrastructure
+for rapid development of domain-specific languages that generate hardware
+designs.</p>
+<p>In order to support Xilinx FPGAs, we implemented an AXI interface so that host
+programs can communicate with kernels running on an FPGA.
+We wrote a interface wrapper in Verilog that translates AXI commands into the <code>go/done</code>
+style interface that Calyx components expect as well as copies memory into
+local BRAMs that Calyx components can access them.</p>
+<p>The Xilinx tools require several different metadata files alongside the Verilog
+source.
+We automated the creation of these files with <code>fud</code> to make interacting with
+these tools more seamless.
+The only piece of the puzzle that is manual at the moment is writing OpenCL
+host code to integrate the kernel into an application.
+While we are not looking to completely automate writing the host code, we would
+like to write a generic host that understands the same data format we use for
+simulation to enable easier validation.</p>
+<p>While we are able to support the specific Xilinx boards, we do not yet have a
+general solution.
+A missing piece in the puzzle is a generic interface and intermediate
+representation that can target arbitrary boards.
+Thankfully, our collaborators at the University of Washington have been
+developing <a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/vegaluisjose/reticle">exactly this</a>.</p>
+<h2 id="new-frontends">New Frontends</h2>
+<p>Calyx’s development as a language and an infrastructure is driven by frontends
+that make use of it.
+Since the publication of our paper, we have implemented two new frontends that
+can be used to stress test Calyx.</p>
+<h3 id="tvm-relay">TVM Relay</h3>
+<p><a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/apache/tvm">TVM</a> is a compiler for machine learning frameworks that can optimize and
+target kernels to several different backends.
+Our TVM frontend compiles TVM’s internal IR, called Relay, to Calyx IR, and
+can successfully simulate small neural networks.
+Relay instructions are quite high-level, implementing operators such as a
+two-dimensional convolution.
+In order to side-step manually generating such operators in Calyx and to
+simplify debugging, we instead generate Dahlia programs to implement these
+operators.</p>
+<p>In <a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/cucapra/calyx/pull/504">Calyx #504</a>, we successfully
+simulated a <a rel="noopener nofollow noreferrer" target="_blank" href="https://en.wikipedia.org/wiki/LeNet">LeNet</a> network model.
+Of course LeNet is an extremely simple neural network and our long-term goal
+is to support modern networks.
+Our next target is the <a rel="noopener nofollow noreferrer" target="_blank" href="https://neurohive.io/en/popular-networks/vgg16/">VGG</a> network.
+However, we’ve also realized while building this network that simple,
+Verilator-based simulation is going to be too slow so we’re also working
+on other efforts like running Calyx on an FPGA and building a fast simulator
+for Calyx itself.</p>
+<h3 id="number-theoretic-transform-ntt">Number Theoretic Transform (NTT)</h3>
+<p>The number theoretic transform (NTT) is a generalization of the fast Fourier
+transform, commonly used as a primitive in homomorphic cryptography.
+We implemented an NTT pipeline generator produces the NTT transform of some
+input with the provided bit width and input array size parameters.</p>
+<h2 id="calyx-circt">Calyx + CIRCT</h2>
+<p><a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/llvm/circt">CIRCT</a> (Circuit IR Compilers and Tools) is a cross-community effort to build
+an open-source hardware ecosystem using the <a rel="noopener nofollow noreferrer" target="_blank" href="https://mlir.llvm.org/">MLIR</a> framework.
+The MLIR framework represents compilation as a series of transformations between
+“dialects” or languages at different levels of abstractions.
+In the long-term, the CIRCT community is interested in compiling high-level
+languages to hardware designs, which is something Calyx can already do today.
+In order to align our efforts, we’ve started implementing a <a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/llvm/circt/tree/46ae6df8eb30c0404a0cc54f92a68a63ef643c89/test/Dialect/Calyx">Calyx dialect</a>
+which can be emitted from other dialects in CIRCT, transformed by the Calyx compiler,
+and of course, integrated with <code>fud</code>.</p>
+<h2 id="control-directed-optimizations-register-unsharing">Control-Directed Optimizations: Register Unsharing</h2>
+<p>Calyx’s strength is in its ability to represent <em>both</em> the structure and the
+control flow of a hardware accelerator.
+Apart from simplifying the design of frontends, this also enables unique
+new optimizations that we’ve termed control-directed hardware optimizations.
+These optimizations are truly unique to Calyx—the compiler needs to have
+both an understanding of the control flow and the structural representation
+to implement them.</p>
+<p>One such optimization is register unsharing.
+Yes you read that right, <em>unsharing</em>. But please hold your ire for a moment, I
+promise there is a method to my madness.
+In compilers like LLVM (and Calyx), register allocation (or register
+sharing) passes aim to reduce the usage of registers in a hardware design.
+Owing to the multi-objective design space, certain hardware designs, such as
+ones targeting FPGAs may want to do the opposite—use more registers in
+order to simplify other circuitry.</p>
+<p>Sharing reduces the resources a given design requires; however, it does so at
+the cost of increasing the wiring complexity.
+Each “shared” instance of a register requires a multiplexer (or a mux) to arbitrate
+access to it.
+Unsharing, in contrast, moves the trade-off in an opposite direction. It
+increases the number of registers in a design but reduces the wiring
+complexity by requiring fewer multiplexers.</p>
+<p>There are no universally “correct” places on this trade-off curve. FPGAs have a
+set amount of resources per block and so up to a certain point it can be better
+to have more registers rather than more multiplexers while the opposite holds for
+taping out a design.</p>
+<p>The <a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/cucapra/calyx/blob/master/calyx/src/passes/register_unsharing.rs">optimization pass</a> itself uses a Calyx-specific version
+of a reaching definitions analysis that accounts for Calyx’s guarded
+assignments.
+The reaching definition can be used to calculate groups that “must-write” and
+“may-read” to registers and use this information to rewrite groups to unshare
+registers.
+For more technical details about the implementation please take a look at the
+<a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/cucapra/calyx/pull/511">pull request</a>.</p>
+<h2 id="calyx-interpreter">Calyx Interpreter</h2>
+<p>Another major infrastructure tool that’s been under-development is a native
+interpreter for Calyx. It might seem a bit strange to be working on an
+interpreter given that Calyx already has a compiler; typically language
+development starts with an interpreter and moves to a compiler later as they are
+far more efficient. Nevertheless, a Calyx interpreter represents an exciting
+development for the Calyx ecosystem allowing us to address many different
+problems: from reducing simulation complexity to verifying compiler passes.</p>
+<p>Currently, the primary way to quickly run Calyx code is by compiling it
+to Verilog and using <a rel="noopener nofollow noreferrer" target="_blank" href="https://www.veripool.org/verilator/">Verilator</a> to simulate it.
+In process, however, we end up losing all of the control information represent
+in the original Calyx program which can be used to optimize simulation.
+We expect that by using the higher-level control information information in
+the Calyx program, we can improve simulation speeds by an order of magnitude.</p>
+<p>A common problem in circuit simulation is that a
+large portion of the circuit is not running at any given time but still must be
+simulated. There are many clever heuristics for identifying the dormant parts of
+the design and saving time by not simulating them; however Calyx needs no such
+heuristics. The control structure in Calyx code means that we know precisely
+what parts of the design are running at any given moment and needn’t waste time
+simulating portions of the circuit which are known to be dormant.
+Furthermore, Calyx IR itself has less simulation complexity than the RTL it
+generates.
+Since the information available at the IR level is more structured, the
+simulation itself is free of the complex details that appear at the RTL layer.</p>
+<p>A Calyx interpreter will let us develop a better debugging infrastructure
+with support for traditional tools like breakpoints, pausing execution, and
+dumping internal state.
+Today, when designing debuggers for hardware, developers have to trade-off between
+the fast but opaque simulation on FPGAs or slow but transparent simulation in
+software simulation.
+A Calyx interpreter represents the best of both worlds, enabling faster and
+transparent execution.</p>
+<p>As a final note, a simulator is also a boon both for the language itself and the
+core compiler infrastructure. Being able to run Calyx programs directly means we
+can perform differential testing on compiler passes and verify that the given
+changes made by a pass are indeed semantic preserving with respect to the input
+program. Plus, the act of making the interpreter itself is an excellent way of
+“hardening” the semantics of the language as it requires making clear decisions
+on corner cases obscured by the translation to Verilog.</p>
+<hr />
+<p>If any of these directions excite you, or you’re just interested in using
+Calyx as a backend, please <a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/cucapra/calyx/discussions">reach out to us</a>! We’d love hear
+from you.</p>
+
+</div>
+
+
+    </div>
+  </section>
+
+<footer>
+  &copy;&nbsp;2021
+<a href="https://capra.cs.cornell.edu/docs/calyx/contributors.html">
+The Calyx Team
+</a>
+&middot; Built using <a href="https://www.getzola.org/">Zola</a>
+</footer>
+</body>
+
+</html>

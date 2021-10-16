@@ -108,13 +108,6 @@ a.unstyled-link:hover, a.unstyled-link:focus {
 }
 
 /********** Layout **********/
-body {
-  margin: auto;
-  max-width: 800px;
-  width: 80%;
-  /*max-width: 600px;*/
-}
-
 header {
   margin-top: 20px;
   justify-content: center;
@@ -218,10 +211,12 @@ body {
   font-family: 'Inter', serif;
   font-weight: 400;
   font-size: 15px;
-  line-height: 1.4;
+  line-height: 1.6;
   color: #333333;
   text-rendering: optimizeLegibility;
-  counter-reset: sidenote-counter;
+  margin: auto;
+  max-width: 800px;
+  width: 80%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -270,7 +265,7 @@ hr {
 
 p {
   margin: 15px 0px 15px 0px;
-  max-width: 600px;
+  max-width: 660px;
   text-align: left;
 }
 
@@ -432,4 +427,23 @@ div.footnotes {
     flex: 0 0 90px;
   }
 
+}
+
+/** Post Styling */
+
+.post img {
+    max-width: 90%;
+}
+
+.post h2 {
+  padding-top: 15px;
+  margin-top: 30px;
+  max-width: 600px;
+}
+
+.post-header .date {
+  margin-top: -0.3em;
+}
+.post-header {
+  margin-bottom: 2em;
 }
