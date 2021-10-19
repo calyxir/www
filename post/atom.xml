@@ -222,6 +222,10 @@ changes made by a pass are indeed semantic preserving with respect to the input
 program. Plus, the act of making the interpreter itself is an excellent way of
 “hardening” the semantics of the language as it requires making clear decisions
 on corner cases obscured by the translation to Verilog.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;If any of these directions excite you, or you’re just interested in using
+Calyx as a backend, please &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;cucapra&#x2F;calyx&#x2F;discussions&quot;&gt;reach out to us&lt;&#x2F;a&gt;! We’d love hear
+from you.&lt;&#x2F;p&gt;
 &lt;!--
 ## Control-Directed Optimizations: Register Unsharing
 
@@ -264,10 +268,6 @@ registers.
 For more technical details about the implementation please take a look at the
 [pull request][register-sharing-pr].
 --&gt;
-&lt;hr &#x2F;&gt;
-&lt;p&gt;If any of these directions excite you, or you’re just interested in using
-Calyx as a backend, please &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;cucapra&#x2F;calyx&#x2F;discussions&quot;&gt;reach out to us&lt;&#x2F;a&gt;! We’d love hear
-from you.&lt;&#x2F;p&gt;
 </content>
 	</entry>
 </feed>
