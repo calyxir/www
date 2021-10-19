@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
 	<title> - Calyx Blog</title>
-	<link href="https://cucapra.github.io/calyx-site/post/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://cucapra.github.io/calyx-site/post/"/>
+	<link href="https://calyxir.org/post/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="https://calyxir.org/post/"/>
 	<generator uri="https://www.getzola.org/">Zola</generator>
 	<updated>2021-07-15T00:00:00+00:00</updated>
-	<id>https://cucapra.github.io/calyx-site/post/atom.xml</id>
+	<id>https://calyxir.org/post/atom.xml</id>
 	<entry xml:lang="en">
 		<title>Growing an Open-Source Hardware Infrastructure</title>
 		<published>2021-07-15T00:00:00+00:00</published>
 		<updated>2021-07-15T00:00:00+00:00</updated>
-		<link href="https://cucapra.github.io/calyx-site/post/one-year/" type="text/html"/>
-		<id>https://cucapra.github.io/calyx-site/post/one-year/</id>
+		<link href="https://calyxir.org/post/one-year/" type="text/html"/>
+		<id>https://calyxir.org/post/one-year/</id>
 		<content type="html">&lt;p&gt;John Hennessy and David Patterson’s Turing lecture proclaimed that a new
 golden age of computer architecture is upon us—one where specialized hardware
 accelerators will become ubiquitous and replace general-purpose architectures
