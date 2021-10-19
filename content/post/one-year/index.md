@@ -252,6 +252,34 @@ program. Plus, the act of making the interpreter itself is an excellent way of
 "hardening" the semantics of the language as it requires making clear decisions
 on corner cases obscured by the translation to Verilog.
 
+---
+
+If any of these directions excite you, or you're just interested in using
+Calyx as a backend, please [reach out to us][calyx-gh-disc]! We'd love hear
+from you.
+
+[lenet]: https://en.wikipedia.org/wiki/LeNet
+[vgg]: https://neurohive.io/en/popular-networks/vgg16/
+[calyx-paper]: https://rachitnigam.com/files/pubs/calyx.pdf
+[mlir]: https://mlir.llvm.org/
+[circt]: https://github.com/llvm/circt
+[calyx-dialect]: https://github.com/llvm/circt/tree/46ae6df8eb30c0404a0cc54f92a68a63ef643c89/test/Dialect/Calyx
+[reticle]: https://github.com/vegaluisjose/reticle
+[dahlia]: https://capra.cs.cornell.edu/dahlia/
+[verilator]: https://www.veripool.org/verilator/
+[tvm]: https://github.com/apache/tvm
+[register-sharing]: https://github.com/cucapra/calyx/blob/master/calyx/src/passes/register_unsharing.rs
+[register-sharing-pr]: https://github.com/cucapra/calyx/pull/511
+[chisel-sim]: https://scottbeamer.net/pubs/beamer-dac2020.pdf
+[calyx-gh-disc]: https://github.com/cucapra/calyx/discussions
+[fud]: https://capra.cs.cornell.edu/docs/calyx/fud/index.html
+[adl]: https://www.sigarch.org/hdl-to-adl/
+[iverilog]: http://iverilog.icarus.com/
+[fud-external]: https://capra.cs.cornell.edu/docs/calyx/fud/external.html
+[scf-to-calyx]: https://github.com/llvm/circt/issues/1777
+[scf]: https://mlir.llvm.org/docs/Dialects/SCFDialect/
+[calyx-circt-issues]: https://github.com/llvm/circt/labels/Calyx
+
 <!--
 ## Control-Directed Optimizations: Register Unsharing
 
@@ -296,30 +324,3 @@ For more technical details about the implementation please take a look at the
 -->
 
 
----
-
-If any of these directions excite you, or you're just interested in using
-Calyx as a backend, please [reach out to us][calyx-gh-disc]! We'd love hear
-from you.
-
-[lenet]: https://en.wikipedia.org/wiki/LeNet
-[vgg]: https://neurohive.io/en/popular-networks/vgg16/
-[calyx-paper]: https://rachitnigam.com/files/pubs/calyx.pdf
-[mlir]: https://mlir.llvm.org/
-[circt]: https://github.com/llvm/circt
-[calyx-dialect]: https://github.com/llvm/circt/tree/46ae6df8eb30c0404a0cc54f92a68a63ef643c89/test/Dialect/Calyx
-[reticle]: https://github.com/vegaluisjose/reticle
-[dahlia]: https://capra.cs.cornell.edu/dahlia/
-[verilator]: https://www.veripool.org/verilator/
-[tvm]: https://github.com/apache/tvm
-[register-sharing]: https://github.com/cucapra/calyx/blob/master/calyx/src/passes/register_unsharing.rs
-[register-sharing-pr]: https://github.com/cucapra/calyx/pull/511
-[chisel-sim]: https://scottbeamer.net/pubs/beamer-dac2020.pdf
-[calyx-gh-disc]: https://github.com/cucapra/calyx/discussions
-[fud]: https://capra.cs.cornell.edu/docs/calyx/fud/index.html
-[adl]: https://www.sigarch.org/hdl-to-adl/
-[iverilog]: http://iverilog.icarus.com/
-[fud-external]: https://capra.cs.cornell.edu/docs/calyx/fud/external.html
-[scf-to-calyx]: https://github.com/llvm/circt/issues/1777
-[scf]: https://mlir.llvm.org/docs/Dialects/SCFDialect/
-[calyx-circt-issues]: https://github.com/llvm/circt/labels/Calyx
