@@ -388,6 +388,7 @@ div.footnotes {
 }
 
 .blurb {
+  font-size: 0.9em;
   margin-bottom: 0.8em;
   display: flex;
   flex-flow: row wrap;
