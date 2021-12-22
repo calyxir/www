@@ -117,7 +117,7 @@ self-evident.
 Being an academic research group, this became a particular pain point for us
 since on boarding new students to the project required weeks of background
 learning about compilers, simulators, and funky CLI tools.</p>
-<p>We set out to address this using <a rel="noopener nofollow noreferrer" target="_blank" href="https://capra.cs.cornell.edu/docs/calyx/fud/index.html"><code>fud</code></a>, a python-based hardware
+<p>We set out to address this using <a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.calyxir.org/fud/index.html"><code>fud</code></a>, a python-based hardware
 workflow manager.
 <code>fud</code> is built around the idea of “stages” which provide a way for transforming
 a set of input files (say a Dahlia source file) into output files (say a file
@@ -137,7 +137,7 @@ we simplify run the command:</p>
       --through icarus-verilog -s verilog.data inputs.json
 </code></pre>
 <p>We’ve built <code>fud</code> so that extending it with new frontends and backends is easy:
-you simply <a rel="noopener nofollow noreferrer" target="_blank" href="https://capra.cs.cornell.edu/docs/calyx/fud/external.html">write a python file</a> that defines the stage
+you simply <a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.calyxir.org/fud/external.html">write a python file</a> that defines the stage
 transformation and register it with <code>fud</code>.</p>
 <h2 id="calyx-on-field-programmable-gate-arrays-fpgas">Calyx on Field-Programmable Gate Arrays (FPGAs)</h2>
 <p>Simulating a hardware design using software tools like <a rel="noopener nofollow noreferrer" target="_blank" href="https://www.veripool.org/verilator/">Verilator</a> and making

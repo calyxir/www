@@ -75,7 +75,7 @@ self-evident.
 Being an academic research group, this became a particular pain point for us
 since on boarding new students to the project required weeks of background
 learning about compilers, simulators, and funky CLI tools.&lt;&#x2F;p&gt;
-&lt;p&gt;We set out to address this using &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;capra.cs.cornell.edu&#x2F;docs&#x2F;calyx&#x2F;fud&#x2F;index.html&quot;&gt;&lt;code&gt;fud&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;, a python-based hardware
+&lt;p&gt;We set out to address this using &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.calyxir.org&#x2F;fud&#x2F;index.html&quot;&gt;&lt;code&gt;fud&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;, a python-based hardware
 workflow manager.
 &lt;code&gt;fud&lt;&#x2F;code&gt; is built around the idea of “stages” which provide a way for transforming
 a set of input files (say a Dahlia source file) into output files (say a file
@@ -95,7 +95,7 @@ we simplify run the command:&lt;&#x2F;p&gt;
       --through icarus-verilog -s verilog.data inputs.json
 &lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;We’ve built &lt;code&gt;fud&lt;&#x2F;code&gt; so that extending it with new frontends and backends is easy:
-you simply &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;capra.cs.cornell.edu&#x2F;docs&#x2F;calyx&#x2F;fud&#x2F;external.html&quot;&gt;write a python file&lt;&#x2F;a&gt; that defines the stage
+you simply &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.calyxir.org&#x2F;fud&#x2F;external.html&quot;&gt;write a python file&lt;&#x2F;a&gt; that defines the stage
 transformation and register it with &lt;code&gt;fud&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;calyx-on-field-programmable-gate-arrays-fpgas&quot;&gt;Calyx on Field-Programmable Gate Arrays (FPGAs)&lt;&#x2F;h2&gt;
 &lt;p&gt;Simulating a hardware design using software tools like &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.veripool.org&#x2F;verilator&#x2F;&quot;&gt;Verilator&lt;&#x2F;a&gt; and making
