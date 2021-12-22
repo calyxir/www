@@ -272,10 +272,10 @@ from you.
 [register-sharing-pr]: https://github.com/cucapra/calyx/pull/511
 [chisel-sim]: https://scottbeamer.net/pubs/beamer-dac2020.pdf
 [calyx-gh-disc]: https://github.com/cucapra/calyx/discussions
-[fud]: https://capra.cs.cornell.edu/docs/calyx/fud/index.html
+[fud]: https://docs.calyxir.org/fud/index.html
 [adl]: https://www.sigarch.org/hdl-to-adl/
 [iverilog]: http://iverilog.icarus.com/
-[fud-external]: https://capra.cs.cornell.edu/docs/calyx/fud/external.html
+[fud-external]: https://docs.calyxir.org/fud/external.html
 [scf-to-calyx]: https://github.com/llvm/circt/issues/1777
 [scf]: https://mlir.llvm.org/docs/Dialects/SCFDialect/
 [calyx-circt-issues]: https://github.com/llvm/circt/labels/Calyx
