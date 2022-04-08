@@ -5,7 +5,7 @@ accelerators.
 Calyx's control language simplifies encoding of high-level semantics.
 The Calyx compiler automatically optimizes and lowers programs into
 synthesizable hardware designs.
-Calyx has been integrated with the [CIRCT infrastructure][circt] and is available as a [dialect][calyx-circt] within it.
+Calyx has been integrated with the [LLVM CIRCT infrastructure][circt] and is available as a [dialect][calyx-circt] within it.
 
 If you're interested in building on Calyx, please [say hello][intro] and let's chat!
 
