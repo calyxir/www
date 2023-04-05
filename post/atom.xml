@@ -15,6 +15,7 @@
         </author>
         <link rel="alternate" href="https://calyxir.org/post/one-year/" type="text/html"/>
         <id>https://calyxir.org/post/one-year/</id>
+        
         <content type="html">&lt;p&gt;John Hennessy and David Patterson’s Turing lecture proclaimed that a new
 golden age of computer architecture is upon us—one where specialized hardware
 accelerators will become ubiquitous and replace general-purpose architectures
@@ -272,5 +273,6 @@ For more technical details about the implementation please take a look at the
 [pull request][register-sharing-pr].
 --&gt;
 </content>
+        
     </entry>
 </feed>
