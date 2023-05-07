@@ -3,7 +3,7 @@ title = "Tutorial @ FCRC '23"
 template="tutorial.html"
 +++
 
-we've all heard the news: Moore's Law is over, performance gains are no longer free, accelerators are the future.
+We've all heard the news: Moore's Law is over, performance gains are no longer free, accelerators are the future.
 
 So how, then, does an enterprising speed devil [TK: better term] like yourself build an accelerator?
 Teach yourself a hardware design language?
