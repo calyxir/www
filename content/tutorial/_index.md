@@ -3,7 +3,15 @@ title = "Tutorial @ FCRC '23"
 template="tutorial.html"
 +++
 
-Have you always dreamed of building your own hardware accelerators by the thought of learning hardware design languages has got you all down?
+we've all heard the news: Moore's Law is over, performance gains are no longer free, accelerators are the future.
 
-Well, you're out of excuses now! Welcome to the Calyx Tutorial at FCRC 2023. We're going to teach you how to take your amazing domain specific language (DSL) and turn programs from it into hardware designs.
-Time to leave all your performance graphs in the dust and become a hardware designer!
+So how, then, does an enterprising speed devil [TK: better term] like yourself build an accelerator?
+Teach yourself a hardware design language?
+Stare at inscrutable errors for weeks?
+Just convert everything into a matrix multiply?
+
+No, thank you.
+
+Welcome to the Calyx Tutorial at FCRC 2023. 
+We'll show you how to stay within the comforts of your domain specific language (DSL) and turn programs written in your language into accelerated hardware designs.
+Your performance graphs will never look the same!
