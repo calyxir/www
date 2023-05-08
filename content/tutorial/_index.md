@@ -44,17 +44,16 @@ For the most part, we'll be helping you write your own Calyx frontend and have s
 
 | Time | Topic |
 | ---- | ----- |
-| 5 mins | Introduction to Calyx |
-| 15 mins | [Setting Up][calyx-start] |
-| 35 mins | [Your first Calyx Program][calyx-prog] |
-| 10 mins | Break |
-| 5 mins | [Pollen: A Pangenome Analysis DSL][pollen] |
-| 15 mins | MrXL: A `map`-`reduce` frontend |
-| 60 mins | Compiling MrXL to Calyx |
-| 10 mins | Break |
-| 5 mins | [`fud`: The Hardware Tool Composer][calyx-fud] |
-| 60 mins | Hardware Performance 101 / MrXL competition |
-| 10 mins | Closing remarks & Competition Winners |
+| 9am-9.05am | Introduction to Calyx |
+| 9.05am-9.20am | [Setting Up][calyx-start] |
+| 9.20am-9.55.am | [Your first Calyx Program][calyx-prog] |
+| 9.55am-10am | [Pollen: A Pangenome Analysis DSL][pollen] |
+| 10am-10.05am | MrXL: A `map`-`reduce` frontend |
+| 10.05am-11am | Compiling MrXL to Calyx |
+| 11am-11.20am | Break |
+| 11.20am-11.25am | [`fud`: The Hardware Tool Composer][calyx-fud] |
+| 11.25am-12.25am | Hardware Performance 101 / MrXL competition |
+| 12.25am-12.30pm | Closing remarks & Competition Winners |
 
 [calyx-prog]: https://docs.calyxir.org/tutorial/language-tut.html
 [calyx-start]: https://docs.calyxir.org/
