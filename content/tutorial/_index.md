@@ -52,8 +52,8 @@ For the most part, we'll be helping you write your own Calyx frontend and have s
 | 10.05am-11am | Compiling MrXL to Calyx |
 | 11am-11.20am | Break |
 | 11.20am-11.25am | [`fud`: The Hardware Tool Composer][calyx-fud] |
-| 11.25am-12.25am | Hardware Performance 101 / MrXL competition |
-| 12.25am-12.30pm | Closing remarks & Competition Winners |
+| 11.25am-12.25pm | Hardware Performance 101 / MrXL competition |
+| 12.25pm-12.30pm | Closing remarks & Competition Winners |
 
 [calyx-prog]: https://docs.calyxir.org/tutorial/language-tut.html
 [calyx-start]: https://docs.calyxir.org/
