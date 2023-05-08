@@ -12,7 +12,7 @@ Processor and process scaling took care of the rest.
 Sadly, Moore's law is over, there are no free lunches left, and everyone at the table is desperate.
 The only way forward is to build specialized hardware accelerators, that can be customized to the needs of the application.
 
-So how, then, does an enterprising speed devil [**TK: better term**] like yourself build an accelerator?
+So how, then, does an enterprising performance hound like yourself build an accelerator?
 Teach yourself a hardware design language?
 Stare at inscrutable errors for weeks?
 Just convert everything into a matrix multiply?
