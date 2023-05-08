@@ -4,11 +4,10 @@ template="tutorial.html"
 +++
 
 
-**When**: **June 18, 2023** <br/>
+**When**: **June 18, 2023; morning session** <br/>
 **Where**: **TK**
 
-In the last four decades, the easiest way to improve performance of programs has been to simply wait;
-Processor and process scaling took care of the rest.
+In the last four decades, the easiest way to improve performance of programs has been to simply wait; processor and process scaling took care of the rest.
 Sadly, Moore's law is over, there are no free lunches left, and everyone at the table is desperate.
 The only way forward is to build specialized hardware accelerators, that can be customized to the needs of the application.
 
@@ -18,14 +17,14 @@ Stare at inscrutable errors for weeks?
 Just convert everything into a matrix multiply?
 No, thank you.
 
-Welcome to the DSL-based Hardware Generation at FCRC 2023.
+Welcome to the DSL-based Hardware Generation tutorial at FCRC 2023.
 We'll show you how to stay within the comforts of your domain specific language (DSL) and turn programs written in your language into accelerated hardware designs.
 Your performance graphs will be more up and more to the right than ever before!
 
 ## Logistics
 
-If you're interested in attending, please register yourself for the **second day of tutorial** when filling out your [PLDI '23 registeration][pldi-reg].
-If you're attending another co-located conference at FCRC and would like to attend, please reach out to [Rachit Nigam][rachit-email].
+If you're interested in attending, please register for the **second day of tutorials** when filling out your [PLDI '23 registration][pldi-reg].
+If you're attending another co-located conference at FCRC and would also like to attend our tutorial, please reach out to [Rachit Nigam][rachit-email].
 
 ## Expectations
 
