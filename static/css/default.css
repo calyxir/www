@@ -8,24 +8,27 @@ img.main-logo {
 }
 
 .logo {
-    width:  100px;
-    height: 100px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin: auto;
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: auto;
 }
+
 .frontend {
   padding-bottom: 2em;
   display: grid;
   grid-template-areas:
-  "content logo"
+    "content logo"
 }
+
 .frontend .content {
   margin-top: auto;
   margin-bottom: auto;
   margin-right: 2em;
   grid-area: content;
 }
+
 .frontend .logo {
   grid-area: logo;
 }
@@ -36,24 +39,29 @@ img.main-logo {
     margin-left: 3em;
     margin-right: 3em;
   }
+
   .frontends {
     display: flex;
     margin-left: 1em;
   }
+
   .frontend:first-child {
     margin-left: 0;
     margin-right: 1em;
   }
+
   .frontend {
     margin-left: 1em;
     margin-right: 1em;
     padding-top: 2em;
     display: block;
   }
+
   .frontend:last-child {
     margin-left: 1em;
     margin-right: 0;
   }
+
   .frontend .content {
     margin-right: 0;
   }
@@ -61,21 +69,25 @@ img.main-logo {
   .lang-examples {
     margin-left: 1em;
   }
+
   .example {
     display: flex;
     flex-direction: row;
     margin: 2em 0;
   }
-  .example > .summary {
-      flex: 1 1 0;
-      width: 0;
+
+  .example>.summary {
+    flex: 1 1 0;
+    width: 0;
     /* max-width: 400px; */
   }
-  .example > .code {
-      flex: 1 1 0;
-      width: 100%;
+
+  .example>.code {
+    flex: 1 1 0;
+    width: 100%;
   }
-  .example > .code {
+
+  .example>.code {
     margin-left: 1em;
   }
 }
@@ -93,17 +105,20 @@ a {
   border-bottom: #bbb 0.1em dotted;
 }
 
-a:hover, a:focus {
-    background: #fbf3f3;
-    transition-property: background;
-    transition-duration: 0.2s;
+a:hover,
+a:focus {
+  background: #fbf3f3;
+  transition-property: background;
+  transition-duration: 0.2s;
 }
 
 /** Remove link styling */
-a.unstyled-link  {
+a.unstyled-link {
   border: none;
 }
-a.unstyled-link:hover, a.unstyled-link:focus {
+
+a.unstyled-link:hover,
+a.unstyled-link:focus {
   background: none;
 }
 
@@ -119,7 +134,7 @@ header hr {
   width: 40%;
   margin-left: auto;
   margin-right: auto;
-  background:#aaa;
+  background: #aaa;
 }
 
 header h1 {
@@ -163,7 +178,9 @@ a.nav-item {
   flex: 1;
   text-align: center;
 }
-a.nav-item:hover, a.nav-item:focus {
+
+a.nav-item:hover,
+a.nav-item:focus {
   transition-property: all;
   color: white;
   transition-duration: 0.2s;
@@ -198,7 +215,11 @@ footer {
 
 /********** Basic styling **********/
 
-html, button, input, select, textarea {
+html,
+button,
+input,
+select,
+textarea {
   /* font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif; */
   font-family: 'Inter', serif;
   font-size: 15px;
@@ -207,7 +228,7 @@ html, button, input, select, textarea {
 
 body {
   /* font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif; */
-    /* font-family: 'Inter', sans-serif; */
+  /* font-family: 'Inter', sans-serif; */
   font-family: 'Inter', serif;
   font-weight: 400;
   font-size: 15px;
@@ -219,20 +240,48 @@ body {
   width: 80%;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-top: 1em;
   margin-bottom: 0.1em;
-  font-weight: 300;
+  /* font-weight: 300; */
   hyphens: none;
 }
 
-h1 { font-size: 36px; line-height: 1.25; letter-spacing: -1px; }
-h2 { font-size: 24px; line-height: 1.35; }
-h3 { font-size: 20px; line-height: 1.5; }
-h4 { font-size: 15px; line-height: 1.6;  letter-spacing: 0px; }
-h5 { font-size: 15px; line-height: 1.6;  letter-spacing: 0px; }
+h1 {
+  font-size: 36px;
+  line-height: 1.25;
+  letter-spacing: -1px;
+}
 
-h4, h5 {
+h2 {
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+h4 {
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: 0px;
+}
+
+h5 {
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: 0px;
+}
+
+h4,
+h5 {
   font-weight: bold;
   display: inline;
   float: left;
@@ -246,21 +295,21 @@ h5 {
   font-weight: normal;
 }
 
-h4:after, h5:after  {
+h4:after,
+h5:after {
   content: ".";
 }
 
-h4 + p, h5 + p  {
-
-}
+h4+p,
+h5+p {}
 
 hr {
- width:10rem;
- border:0;
- height:1px;
- background:#aaa;
- text-align:left;
- margin-left:0
+  width: 10rem;
+  border: 0;
+  height: 1px;
+  background: #aaa;
+  text-align: left;
+  margin-left: 0
 }
 
 p {
@@ -269,11 +318,19 @@ p {
   text-align: left;
 }
 
-ul { list-style: circle; }
-ol { list-style: decimal; }
-ol, ul {
+ul {
+  list-style: circle;
+}
+
+ol {
+  list-style: decimal;
+}
+
+ol,
+ul {
   margin-top: 0;
 }
+
 /*li { margin-bottom: 0; }*/
 
 pre {
@@ -291,18 +348,23 @@ pre {
   /* background-color: red; */
 }
 
-th,
+/* th,
 td {
   padding: 12px 15px;
   text-align: left;
   border-top: 1px solid #E1E1E1;
-  border-bottom: 1px solid #E1E1E1; }
+  border-bottom: 1px solid #E1E1E1;
+} */
+
 th:first-child,
 td:first-child {
-  padding-left: 0; }
+  padding-left: 0;
+}
+
 th:last-child,
 td:last-child {
-  padding-right: 0; }
+  padding-right: 0;
+}
 
 figcaption {
   margin-top: 15px;
@@ -314,11 +376,11 @@ dt {
 }
 
 label.sidenote-number {
-    display: inline;
+  display: inline;
 }
 
 input.margin-toggle {
-    display: none;
+  display: none;
 }
 
 label.margin-toggle:not(.sidenote-number) {
@@ -327,41 +389,42 @@ label.margin-toggle:not(.sidenote-number) {
 
 
 @media (max-width: 1130px) {
-    label.margin-toggle:not(.sidenote-number) {
-        display: inline;
-    }
+  label.margin-toggle:not(.sidenote-number) {
+    display: inline;
+  }
 
-    .sidenote,
-    .marginnote {
-        display: none;
-    }
+  .sidenote,
+  .marginnote {
+    display: none;
+  }
 
-    .margin-toggle:checked + .sidenote,
-    .margin-toggle:checked + .marginnote {
-        display: block;
-        float: left;
-        left: 1rem;
-        clear: both;
-        width: 95%;
-        margin: 1rem 2.5%;
-        vertical-align: baseline;
-        position: relative;
-    }
+  .margin-toggle:checked+.sidenote,
+  .margin-toggle:checked+.marginnote {
+    display: block;
+    float: left;
+    left: 1rem;
+    clear: both;
+    width: 95%;
+    margin: 1rem 2.5%;
+    vertical-align: baseline;
+    position: relative;
+  }
 
-    label {
-        cursor: pointer;
-    }
+  label {
+    cursor: pointer;
+  }
 }
 
 label.sidenote-number {
-    display: inline;
+  display: inline;
 }
+
 label.margin-toggle:not(.sidenote-number) {
-    display: none;
+  display: none;
 }
 
 /*** Footnotes */
-.footnote-definition > p {
+.footnote-definition>p {
   display: inline;
 }
 
@@ -394,19 +457,19 @@ div.footnotes {
   flex-flow: row wrap;
 }
 
-.blurb > .date {
+.blurb>.date {
   vertical-align: top;
   flex: 1 100%;
 }
 
-.blurb > .description {
+.blurb>.description {
   vertical-align: top;
   margin-left: 1em;
   flex: 1 1;
 }
 
-.blurb > .description > .title {
-    vertical-align: top;
+.blurb>.description>.title {
+  vertical-align: top;
 }
 
 .blurb p {
@@ -415,12 +478,14 @@ div.footnotes {
 
 
 @media screen and (min-width: 800px) {
-  .blurb > .date {
+  .blurb>.date {
     text-align: right;
     flex: 0 0 65px;
   }
 
-  .blurb { margin-bottom: 4px; }
+  .blurb {
+    margin-bottom: 4px;
+  }
 
   .publication-venue {
     margin-left: 1em;
@@ -433,7 +498,7 @@ div.footnotes {
 /** Post Styling */
 
 .post img {
-    max-width: 90%;
+  max-width: 90%;
 }
 
 .post h2 {
@@ -445,6 +510,33 @@ div.footnotes {
 .post-header .date {
   margin-top: -0.3em;
 }
+
 .post-header {
   margin-bottom: 2em;
+}
+
+/*************************************************
+ *  Tables
+ **************************************************/
+
+table {
+  width: 80%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  font-size: 0.93rem;
+  border: none;
+  border-collapse: separate;
+}
+
+td {
+  padding: 3px;
+}
+
+thead {
+  border-top: 1px solid #ddd;
+}
+
+table>tbody>tr:nth-child(odd)>td,
+table>tbody>tr:nth-child(odd)>th {
+  background-color: #f9f9f9;
 }
