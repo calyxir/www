@@ -3,9 +3,12 @@ title = "Tutorial @ FCRC '23"
 template="tutorial.html"
 +++
 
-We've all heard the news: Moore's Law is over, performance gains are no longer free, accelerators are the future.
 
-So how, then, does an enterprising speed devil [TK: better term] like yourself build an accelerator?
+**When**: **TK** <br/>
+**Where**: **TK**
+
+We've all heard the news: Moore's Law is over, performance gains are no longer free, accelerators are the future.
+So how, then, does an enterprising speed devil [**TK: better term**] like yourself build an accelerator?
 Teach yourself a hardware design language?
 Stare at inscrutable errors for weeks?
 Just convert everything into a matrix multiply?
@@ -16,8 +19,16 @@ Welcome to the Calyx Tutorial at FCRC 2023.
 We'll show you how to stay within the comforts of your domain specific language (DSL) and turn programs written in your language into accelerated hardware designs.
 Your performance graphs will never look the same!
 
+## Expectations
 
-### Schedule
+We're big believers in learning by doing, so we'll be teaching you how to write your own Calyx frontend from scratch.
+Please bring your laptops and expect to be programming for most of the tutorial.
+
+We'll provide a docker container (**TK**) with all the tools needed to make Calyx program compile and run locally.
+If you know you'll be attending the tutorial for sure, please install them beforehand to save time.
+
+
+## Schedule
 
 Here is an extremely tentative schedule for the tutorial.
 For the most part, we'll be helping you write your own Calyx frontend and have short, interspersed talks.
