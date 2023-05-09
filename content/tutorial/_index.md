@@ -3,8 +3,9 @@ title = "DSL-Based Hardware Generation"
 template="tutorial.html"
 +++
 
+*At [PLDI 2023][pldi-home] in Orlando*
 
-**When**: **June 18, 2023; morning session** <br/>
+**When**: **Sunday June 18, 2023; morning session** <br/>
 **Where**: **TK**
 
 In the last four decades, the easiest way to improve performance of programs has been to simply wait; processor and process scaling took care of the rest.
@@ -23,8 +24,9 @@ Your performance graphs will be more up and more to the right than ever before!
 
 ## Logistics
 
-If you're interested in attending, please register for the **second day of tutorials** when filling out your [PLDI '23 registration][pldi-reg].
-If you're attending another co-located conference at FCRC and would also like to attend our tutorial, please reach out to [Rachit Nigam][rachit-email].
+If you're interested in attending, please register for the **Sunday tutorials and workshops** when registering for [PLDI '23][pldi-reg].
+If you're attending another co-located conference at FCRC '23 and would also like to attend our tutorial, please reach out to [Rachit Nigam][rachit-email].
+If you'd like to attend virtually, please also get in touch.
 
 ## Expectations
 
@@ -59,6 +61,7 @@ For the most part, we'll be helping you write your own Calyx frontend and have s
 [calyx-fud]: https://docs.calyxir.org/fud/index.html
 
 [rachit-email]: mailto:rnigam@cs.cornell.edu
-[pldi-reg]: https://pldi23.sigplan.org/venue/pldi-2023-venue
+[pldi-reg]: https://fcrc.acm.org/
+[pldi-home]: https://pldi23.sigplan.org/
 [calyx-docker]: https://github.com/cucapra/calyx/pkgs/container/calyx
 [pollen]: https://github.com/cucapra/pollen
