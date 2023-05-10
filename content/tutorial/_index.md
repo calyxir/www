@@ -26,7 +26,11 @@ Your performance graphs will be more up and more to the right than ever before!
 
 If you're interested in attending, please register for the **Sunday tutorials and workshops** when registering for [PLDI '23][pldi-reg].
 If you're attending another co-located conference at FCRC '23 and would also like to attend our tutorial, please reach out to [Rachit Nigam][rachit-email].
-If you'd like to attend virtually, please also get in touch.
+
+You can also join us virtually, which does not require FCRC registration.
+Instead, [pre-register for this Zoom meeting][zoom] to get the link to join.
+
+[zoom]: https://cornell.zoom.us/meeting/register/tJYud-mrqD0iE9XLs5Ms6vxFI-wSngje6AEh
 
 ## Expectations
 
