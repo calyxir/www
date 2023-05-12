@@ -319,10 +319,12 @@ p {
 }
 
 ul {
+  width: 78%;
   list-style: circle;
 }
 
 ol {
+  width: 78%;
   list-style: decimal;
 }
 
