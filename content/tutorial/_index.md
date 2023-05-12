@@ -24,13 +24,10 @@ Your performance graphs will be more up and more to the right than ever before!
 
 ## Logistics
 
-If you're interested in attending, please register for the **Sunday tutorials and workshops** when registering for [PLDI '23][pldi-reg].
-If you're attending another co-located conference at FCRC '23 and would also like to attend our tutorial, please reach out to [Rachit Nigam][rachit-email].
-
-You can also join us virtually, which does not require FCRC registration.
-Instead, [pre-register for this Zoom meeting][zoom] to get the link to join.
-
-[zoom]: https://cornell.zoom.us/meeting/register/tJYud-mrqD0iE9XLs5Ms6vxFI-wSngje6AEh
+There are three primary ways to attend:
+* If you're attending PLDI '23, please register for the **Sunday tutorials and workshops** when registering for [PLDI '23][pldi-reg].
+* If you're attending a colocated conference at FCRC '23, please reach out to [Rachit Nigam][rachit-email].
+* If you'd like to attend virtually, please [pre-register for this Zoom meeting][zoom] to get the link to join.
 
 ## Expectations
 
@@ -69,3 +66,4 @@ For the most part, we'll be helping you write your own Calyx frontend and have s
 [pldi-home]: https://pldi23.sigplan.org/
 [calyx-docker]: https://github.com/cucapra/calyx/pkgs/container/calyx
 [pollen]: https://github.com/cucapra/pollen
+[zoom]: https://cornell.zoom.us/meeting/register/tJYud-mrqD0iE9XLs5Ms6vxFI-wSngje6AEh
