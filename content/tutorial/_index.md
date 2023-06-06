@@ -6,7 +6,7 @@ template="tutorial.html"
 *At [PLDI 2023][pldi-home] in Orlando*
 
 **When**: **Sunday June 18, 2023; morning session** <br/>
-**Where**: **TK**
+**Where**: **Magnolia 9**
 
 In the last four decades, the easiest way to improve performance of programs has been to simply wait; processor and process scaling took care of the rest.
 Sadly, Moore's law is over, there are no free lunches left, and everyone at the table is desperate.
