@@ -41,25 +41,28 @@ If you know you'll be attending the tutorial for sure, please install them befor
 
 ## Schedule
 
-Here is an extremely tentative schedule for the tutorial.
+Here is the tentative schedule for the tutorial.
 For the most part, we'll be helping you write your own Calyx frontend and have short, interspersed talks.
 
 | Time | Topic |
 | ---- | ----- |
-| 9am-9.05am | Introduction to Calyx |
-| 9.05am-9.20am | [Setting Up][calyx-start] |
-| 9.20am-9.55.am | [Your first Calyx Program][calyx-prog] |
-| 9.55am-10am | [Pollen: A Pangenome Analysis DSL][pollen] |
-| 10am-10.05am | MrXL: A `map`-`reduce` frontend |
-| 10.05am-11am | Compiling MrXL to Calyx |
-| 11am-11.20am | Break |
-| 11.20am-11.25am | [`fud`: The Hardware Tool Composer][calyx-fud] |
-| 11.25am-12.25pm | Hardware Performance 101 / MrXL competition |
-| 12.25pm-12.30pm | Closing remarks & Competition Winners |
+| 9-9:20am | Introduction to Calyx, and [setting up][calyx-start] |
+| 9:20-9:55am | [Your first Calyx program][calyx-prog] |
+| 9:55-10am | [`fud`, the hardware tool composer][calyx-fud] |
+| 10-10:10am | [MrXL, a `map`-`reduce` frontend][mrxl] |
+| 10:10-10:50am | Implement a `map` operation for MrXL | 
+| 10:50-10:55am | [Cider, the Calyx interactive debugger][cidr] |
+| 10:55-11am | [Pollen, a pangenome analysis DSL][pollen] |
+| 11-11:20am | Break |
+| 11:20am-12:20pm | Contest: extensions to MrXL! |
+| 12:20-12:30pm | Award ceremony and closing remarks |
+
 
 [calyx-prog]: https://docs.calyxir.org/tutorial/language-tut.html
 [calyx-start]: https://docs.calyxir.org/
 [calyx-fud]: https://docs.calyxir.org/fud/index.html
+[mrxl]: https://docs.calyxir.org/tutorial/frontend-tut.html
+[cidr]: https://docs.calyxir.org/debug/cider.html
 
 [rachit-email]: mailto:rnigam@cs.cornell.edu
 [pldi-reg]: https://fcrc.acm.org/
