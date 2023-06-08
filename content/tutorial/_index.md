@@ -42,6 +42,7 @@ If you know you'll be attending the tutorial for sure, please install them befor
 ## Schedule
 
 Here is the tentative schedule for the tutorial.
+All times are in US Eastern time, GMT-4.
 For the most part, we'll be helping you write your own Calyx frontend and have short, interspersed talks.
 
 | Time | Topic |
