@@ -72,4 +72,4 @@ If you'd like to follow along at your own pace, [here][slide-deck] are the slide
 [calyx-docker]: https://github.com/cucapra/calyx/pkgs/container/calyx
 [pollen]: https://github.com/cucapra/pollen
 [zoom]: https://cornell.zoom.us/meeting/register/tJYud-mrqD0iE9XLs5Ms6vxFI-wSngje6AEh
-[slide-deck]: /pdf/competition_hints.pdf
+[slide-deck]: /pdf/fcrc_slides.pdf
