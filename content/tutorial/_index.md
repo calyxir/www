@@ -43,7 +43,7 @@ If you know you'll be attending the tutorial for sure, please install them befor
 
 Here is the tentative schedule for the tutorial.
 All times are in US Eastern Time, GMT-4.
-For the most part, we'll be helping you write your own Calyx frontend and have short, interspersed talks.
+For the most part, we'll be helping you write your own Calyx frontend and have short, interspersed talks ([slide deck][slide-deck]).
 
 | Time | Topic |
 | ---- | ----- |
@@ -51,7 +51,7 @@ For the most part, we'll be helping you write your own Calyx frontend and have s
 | 9:20-9:55am | [Your first Calyx program][calyx-prog] |
 | 9:55-10am | [`fud`, the hardware tool composer][calyx-fud] |
 | 10-10:10am | [MrXL, a `map`-`reduce` frontend][mrxl] |
-| 10:10-10:50am | Implement a `map` operation for MrXL | 
+| 10:10-10:50am | Implement a `map` operation for MrXL |
 | 10:50-10:55am | [Cider, the Calyx interactive debugger][cidr] |
 | 10:55-11am | [Pollen, a pangenome analysis DSL][pollen] |
 | 11-11:20am | Break |
@@ -71,3 +71,4 @@ For the most part, we'll be helping you write your own Calyx frontend and have s
 [calyx-docker]: https://github.com/cucapra/calyx/pkgs/container/calyx
 [pollen]: https://github.com/cucapra/pollen
 [zoom]: https://cornell.zoom.us/meeting/register/tJYud-mrqD0iE9XLs5Ms6vxFI-wSngje6AEh
+[slide-deck]: /pdf/competition_hints.pdf
