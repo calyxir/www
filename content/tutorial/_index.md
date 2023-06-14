@@ -43,7 +43,8 @@ If you know you'll be attending the tutorial for sure, please install them befor
 
 Here is the tentative schedule for the tutorial.
 All times are in US Eastern Time, GMT-4.
-For the most part, we'll be helping you write your own Calyx frontend and have short, interspersed talks ([slide deck][slide-deck]).
+For the most part, we'll be helping you write your own Calyx frontend and have short, interspersed talks.
+If you'd like to follow along at your own pace, ([here][slide-deck]) are the slides we'll be using.
 
 | Time | Topic |
 | ---- | ----- |
