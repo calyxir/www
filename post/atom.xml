@@ -52,12 +52,12 @@ accelerators.
 The equivalent of Calyx in the software world would be the LLVM compiler
 infrastructure that handles the “boring” aspects of building a language:
 optimization, debugging, testing, etc.&lt;&#x2F;p&gt;
-&lt;p&gt;Calyx aims to be the LLVM of &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.sigarch.org&#x2F;hdl-to-adl&#x2F;&quot;&gt;accelerator design languages&lt;&#x2F;a&gt; and make it
+&lt;p&gt;Calyx aims to be the LLVM of &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.sigarch.org&#x2F;hdl-to-adl&#x2F;&quot;&gt;accelerator design languages&lt;&#x2F;a&gt; and make it
 easier for researchers and practitioners to prototype new languages without
 having to build all the tedious machinery required to build a “real” language.
 This post is an overview of the infrastructure and ecosystem we’re building
 around Calyx.
-It also celebrates roughly one year since the submission of the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;rachitnigam.com&#x2F;files&#x2F;pubs&#x2F;calyx.pdf&quot;&gt;original Calyx
+It also celebrates roughly one year since the submission of the &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;rachitnigam.com&#x2F;files&#x2F;pubs&#x2F;calyx.pdf&quot;&gt;original Calyx
 paper&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;simplifying-the-hardware-workflow&quot;&gt;Simplifying the Hardware Workflow&lt;&#x2F;h2&gt;
 &lt;p&gt;Hardware workflows are notoriously complicated, requiring invocation and
@@ -65,17 +65,17 @@ chaining of dozens of commands before you get anything working.
 This problem is magnified when &lt;em&gt;compiling&lt;&#x2F;em&gt; high-level languages to hardware
 design languages since you need invoke even more tools.
 For example, here is the set of commands needed to simulate a hardware
-design written in &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;capra.cs.cornell.edu&#x2F;dahlia&#x2F;&quot;&gt;Dahlia&lt;&#x2F;a&gt; (a C-like accelerator design language) with
-&lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.veripool.org&#x2F;verilator&#x2F;&quot;&gt;Verilator&lt;&#x2F;a&gt;:&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;# Generate Calyx IR from Dahlia
-% dahlia&amp;#x2F;fuse -b calyx --lower -l error -o out.futil
+design written in &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;capra.cs.cornell.edu&#x2F;dahlia&#x2F;&quot;&gt;Dahlia&lt;&#x2F;a&gt; (a C-like accelerator design language) with
+&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.veripool.org&#x2F;verilator&#x2F;&quot;&gt;Verilator&lt;&#x2F;a&gt;:&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;bash&quot;&gt;# Generate Calyx IR from Dahlia
+% dahlia&#x2F;fuse -b calyx --lower -l error -o out.futil
 # Generate Verilog from Calyx IR
-% calyx&amp;#x2F;futil -b verilog out.futil -o out.sv
+% calyx&#x2F;futil -b verilog out.futil -o out.sv
 # Compile Verilog using Verilator
 % verilator -cc --trace out.sv --exe testbench.cpp \
   --exe --build --top-module main
 # Execute the generated Verilator code.
-% .&amp;#x2F;Vmain   # Execute the Verilator model
+% .&#x2F;Vmain   # Execute the Verilator model
 &lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;Every time the original Dahlia file is changed, these commands need to be
 re-run!
@@ -85,7 +85,7 @@ self-evident.
 Being an academic research group, this became a particular pain point for us
 since on boarding new students to the project required weeks of background
 learning about compilers, simulators, and funky CLI tools.&lt;&#x2F;p&gt;
-&lt;p&gt;We set out to address this using &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.calyxir.org&#x2F;fud&#x2F;index.html&quot;&gt;&lt;code&gt;fud&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;, a python-based hardware
+&lt;p&gt;We set out to address this using &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.calyxir.org&#x2F;fud&#x2F;index.html&quot;&gt;&lt;code&gt;fud&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;, a python-based hardware
 workflow manager.
 &lt;code&gt;fud&lt;&#x2F;code&gt; is built around the idea of “stages” which provide a way for transforming
 a set of input files (say a Dahlia source file) into output files (say a file
@@ -93,22 +93,22 @@ with Calyx IR).
 &lt;code&gt;fud&lt;&#x2F;code&gt; can also chain sequences of stages to transform files several times.
 For example, the following &lt;code&gt;fud&lt;&#x2F;code&gt; command runs all the necessary steps to
 compile a Dahlia source file through Calyx and simulate it with Verilator:&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;% fud exec input.fuse --from dahlia --to dat \
+&lt;pre&gt;&lt;code data-lang=&quot;bash&quot;&gt;% fud exec input.fuse --from dahlia --to dat \
       -s verilog.data inputs.json
 &lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;When given this command, &lt;code&gt;fud&lt;&#x2F;code&gt; invokes the right compiler toolchains, marshals
 input data to Verilator and generates output in a readable format.
 &lt;code&gt;fud&lt;&#x2F;code&gt; also makes it trivial to switch between various frontends and backends.
-For example, to simulate the same design with &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;http:&#x2F;&#x2F;iverilog.icarus.com&#x2F;&quot;&gt;Icarus Verilog&lt;&#x2F;a&gt;,
+For example, to simulate the same design with &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;http:&#x2F;&#x2F;iverilog.icarus.com&#x2F;&quot;&gt;Icarus Verilog&lt;&#x2F;a&gt;,
 we simplify run the command:&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;% fud exec input.fuse --from dahlia --to dat \
+&lt;pre&gt;&lt;code data-lang=&quot;bash&quot;&gt;% fud exec input.fuse --from dahlia --to dat \
       --through icarus-verilog -s verilog.data inputs.json
 &lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;We’ve built &lt;code&gt;fud&lt;&#x2F;code&gt; so that extending it with new frontends and backends is easy:
-you simply &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.calyxir.org&#x2F;fud&#x2F;external.html&quot;&gt;write a python file&lt;&#x2F;a&gt; that defines the stage
+you simply &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.calyxir.org&#x2F;fud&#x2F;external.html&quot;&gt;write a python file&lt;&#x2F;a&gt; that defines the stage
 transformation and register it with &lt;code&gt;fud&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;calyx-on-field-programmable-gate-arrays-fpgas&quot;&gt;Calyx on Field-Programmable Gate Arrays (FPGAs)&lt;&#x2F;h2&gt;
-&lt;p&gt;Simulating a hardware design using software tools like &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.veripool.org&#x2F;verilator&#x2F;&quot;&gt;Verilator&lt;&#x2F;a&gt; and making
+&lt;p&gt;Simulating a hardware design using software tools like &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.veripool.org&#x2F;verilator&#x2F;&quot;&gt;Verilator&lt;&#x2F;a&gt; and making
 them run on an FPGA are two very different challenges.
 Running something on an FPGA requires generating the configuration files,
 host code, and circuitry to interface the design with a CPU controller.
@@ -145,14 +145,14 @@ general solution.
 A missing piece in the puzzle is a generic interface and intermediate
 representation that can target arbitrary boards.
 Thankfully, our collaborators at the University of Washington have been
-developing &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;vegaluisjose&#x2F;reticle&quot;&gt;exactly this&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+developing &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;vegaluisjose&#x2F;reticle&quot;&gt;exactly this&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;new-frontends&quot;&gt;New Frontends&lt;&#x2F;h2&gt;
 &lt;p&gt;Calyx’s development as a language and an infrastructure is driven by frontends
 that make use of it.
 Since the publication of our paper, we have implemented two new frontends that
 can be used to stress test Calyx.&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;tvm-relay&quot;&gt;TVM Relay&lt;&#x2F;h3&gt;
-&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;apache&#x2F;tvm&quot;&gt;TVM&lt;&#x2F;a&gt; is a compiler for machine learning frameworks that can optimize and
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;apache&#x2F;tvm&quot;&gt;TVM&lt;&#x2F;a&gt; is a compiler for machine learning frameworks that can optimize and
 target kernels to several different backends.
 Our TVM frontend compiles TVM’s internal IR, called Relay, to Calyx IR, and
 can successfully simulate small neural networks.
@@ -161,11 +161,11 @@ two-dimensional convolution.
 In order to side-step manually generating such operators in Calyx and to
 simplify debugging, we instead generate Dahlia programs to implement these
 operators.&lt;&#x2F;p&gt;
-&lt;p&gt;In &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;cucapra&#x2F;calyx&#x2F;pull&#x2F;504&quot;&gt;Calyx #504&lt;&#x2F;a&gt;, we successfully
-simulated a &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;LeNet&quot;&gt;LeNet&lt;&#x2F;a&gt; network model.
+&lt;p&gt;In &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;cucapra&#x2F;calyx&#x2F;pull&#x2F;504&quot;&gt;Calyx #504&lt;&#x2F;a&gt;, we successfully
+simulated a &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;LeNet&quot;&gt;LeNet&lt;&#x2F;a&gt; network model.
 Of course LeNet is an extremely simple neural network and our long-term goal
 is to support modern networks.
-Our next target is the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;neurohive.io&#x2F;en&#x2F;popular-networks&#x2F;vgg16&#x2F;&quot;&gt;VGG&lt;&#x2F;a&gt; network.
+Our next target is the &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;neurohive.io&#x2F;en&#x2F;popular-networks&#x2F;vgg16&#x2F;&quot;&gt;VGG&lt;&#x2F;a&gt; network.
 However, we’ve also realized while building this network that simple,
 Verilator-based simulation is going to be too slow so we’re also working
 on other efforts like running Calyx on an FPGA and building a fast simulator
@@ -176,22 +176,22 @@ transform, commonly used as a primitive in homomorphic cryptography.
 We implemented an NTT pipeline generator produces the NTT transform of some
 input with the provided bit width and input array size parameters.&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;calyx-circt&quot;&gt;Calyx + CIRCT&lt;&#x2F;h2&gt;
-&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;llvm&#x2F;circt&quot;&gt;CIRCT&lt;&#x2F;a&gt; (Circuit IR Compilers and Tools) is a cross-community effort to build
-an open-source hardware ecosystem using the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;mlir.llvm.org&#x2F;&quot;&gt;MLIR&lt;&#x2F;a&gt; framework.
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;llvm&#x2F;circt&quot;&gt;CIRCT&lt;&#x2F;a&gt; (Circuit IR Compilers and Tools) is a cross-community effort to build
+an open-source hardware ecosystem using the &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;mlir.llvm.org&#x2F;&quot;&gt;MLIR&lt;&#x2F;a&gt; framework.
 The MLIR framework represents compilation as a series of transformations between
 “dialects” or languages at different levels of abstractions.
 In the long-term, the CIRCT community is interested in compiling high-level
 languages to hardware designs, which is something Calyx can already do today.
-In order to align our efforts, we’ve implemented a &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;llvm&#x2F;circt&#x2F;tree&#x2F;46ae6df8eb30c0404a0cc54f92a68a63ef643c89&#x2F;test&#x2F;Dialect&#x2F;Calyx&quot;&gt;Calyx
+In order to align our efforts, we’ve implemented a &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;llvm&#x2F;circt&#x2F;tree&#x2F;46ae6df8eb30c0404a0cc54f92a68a63ef643c89&#x2F;test&#x2F;Dialect&#x2F;Calyx&quot;&gt;Calyx
 dialect&lt;&#x2F;a&gt; which can be emitted from other dialects in CIRCT,
 transformed by the Calyx compiler, and of course, integrated with &lt;code&gt;fud&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
-&lt;p&gt;The CIRCT developers have also implemented a &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;llvm&#x2F;circt&#x2F;issues&#x2F;1777&quot;&gt;lowering pass&lt;&#x2F;a&gt; that
-transforms programs in the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;mlir.llvm.org&#x2F;docs&#x2F;Dialects&#x2F;SCFDialect&#x2F;&quot;&gt;SCF dialect&lt;&#x2F;a&gt;, which represents parallel,
+&lt;p&gt;The CIRCT developers have also implemented a &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;llvm&#x2F;circt&#x2F;issues&#x2F;1777&quot;&gt;lowering pass&lt;&#x2F;a&gt; that
+transforms programs in the &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;mlir.llvm.org&#x2F;docs&#x2F;Dialects&#x2F;SCFDialect&#x2F;&quot;&gt;SCF dialect&lt;&#x2F;a&gt;, which represents parallel,
 imperative, loop-based programs, to Calyx.
 We’re super excited about the future opportunities that this integration brings
 and will be building tons of new features using it.
 If you’re excited about CIRCT and Calyx, you can start contributing to the
-&lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;llvm&#x2F;circt&#x2F;labels&#x2F;Calyx&quot;&gt;issues&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;llvm&#x2F;circt&#x2F;labels&#x2F;Calyx&quot;&gt;issues&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;calyx-interpreter&quot;&gt;Calyx Interpreter&lt;&#x2F;h2&gt;
 &lt;p&gt;Another major infrastructure tool that’s been under-development is a native
 interpreter for Calyx. It might seem a bit strange to be working on an
@@ -201,7 +201,7 @@ far more efficient. Nevertheless, a Calyx interpreter represents an exciting
 development for the Calyx ecosystem allowing us to address many different
 problems: from reducing simulation complexity to verifying compiler passes.&lt;&#x2F;p&gt;
 &lt;p&gt;Currently, the primary way to quickly run Calyx code is by compiling it
-to Verilog and using &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.veripool.org&#x2F;verilator&#x2F;&quot;&gt;Verilator&lt;&#x2F;a&gt; to simulate it.
+to Verilog and using &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.veripool.org&#x2F;verilator&#x2F;&quot;&gt;Verilator&lt;&#x2F;a&gt; to simulate it.
 In process, however, we end up losing all of the control information represent
 in the original Calyx program which can be used to optimize simulation.
 We expect that by using the higher-level control information information in
@@ -234,7 +234,7 @@ program. Plus, the act of making the interpreter itself is an excellent way of
 on corner cases obscured by the translation to Verilog.&lt;&#x2F;p&gt;
 &lt;hr &#x2F;&gt;
 &lt;p&gt;If any of these directions excite you, or you’re just interested in using
-Calyx as a backend, please &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;cucapra&#x2F;calyx&#x2F;discussions&quot;&gt;reach out to us&lt;&#x2F;a&gt;! We’d love hear
+Calyx as a backend, please &lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;cucapra&#x2F;calyx&#x2F;discussions&quot;&gt;reach out to us&lt;&#x2F;a&gt;! We’d love hear
 from you.&lt;&#x2F;p&gt;
 &lt;!--
 ## Control-Directed Optimizations: Register Unsharing

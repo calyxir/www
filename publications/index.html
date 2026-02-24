@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Rachit Nigam">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calyx | A Compiler Infrastructure for Accelerator Generators</title>
+
+  <link rel="icon" href="https://calyxir.org/img/logo.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://calyxir.org/css/normalize.css">
+  <link rel="stylesheet" href="https://calyxir.org/css/default.css">
+  <link rel="stylesheet" type="text/css" href="https://calyxir.org/css/prism.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous"/>
+
+  
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="https://calyxir.org/post/atom.xml">
+  
+
+</head>
+
+<body>
+    <script src=https://calyxir.org/js/prism.js></script>
+    <script src=https://calyxir.org/js/prism-futil.js></script>
+    <header>
+      <a class="unstyled-link" href="https://calyxir.org">
+        <img class="main-logo" src="https://calyxir.org/img/logo-text.svg" alt="Calyx" />
+    </a>
+    <h3>
+    A Compiler Infrastructure for Accelerator Generators
+    </h3>
+    <hr/>
+    <nav>
+      <a class="nav-item" href="https://calyxir.org/publications">Publications</a>
+      <a class="nav-item" href="https://github.com/cucapra/calyx">Code</a>
+      <a class="nav-item" href="https://docs.calyxir.org">Documentation</a>
+      <a class="nav-item" href="https://github.com/cucapra/calyx/discussions">Discussions</a>
+      <a class="nav-item" href="http://play.calyxir.org">Playground</a>
+      <a class="nav-item" href="https://calyxir.org/post">Blog</a>
+    </nav>
+    </header>
+  <section class="section">
+    <div class="container">
+      
+<h1 id="publications">Publications</h1>
+<ul>
+<li><a rel="noopener nofollow noreferrer external" target="_blank" href="https://arxiv.org/abs/2511.19764">Understanding Accelerator Compilers via Performance Profiling</a>
+Ayaka Yorihiro, Griffin Berlstein, Pedro Pontes García, Kevin Laufer, Adrian Sampson.
+<em>arXiv preprint</em></li>
+<li><a rel="noopener nofollow noreferrer external" target="_blank" href="https://arxiv.org/abs/2512.06177">From PyTorch to Calyx: An Open-Source Compiler Toolchain for ML Accelerators</a>
+Jiahan Xie, Evan Williams, Adrian Sampson.
+<a rel="noopener nofollow noreferrer external" target="_blank" href="https://c4ml.org/"><em>Workshop on Compilers for Machine Learning (C4ML) 2026</em></a></li>
+<li><a rel="noopener nofollow noreferrer external" target="_blank" href="https://accml.dcs.gla.ac.uk/papers/2026/8th_AccML_paper_7.pdf">From PyTorch to Calyx: An Open-Source Compiler Toolchain for ML Accelerators</a>
+Jiahan Xie, Evan Williams, Adrian Sampson.
+<a rel="noopener nofollow noreferrer external" target="_blank" href="https://accml.dcs.gla.ac.uk/"><em>Workshop on Accelerated Machine Learning (AccML) 2026</em></a></li>
+<li><a rel="noopener nofollow noreferrer external" target="_blank" href="https://ayakayorihiro.github.io/files/publications/calyx-firrtl.pdf">A FIRRTL Backend for the Calyx High-Level Accelerator Compilation Infrastructure</a>
+Ayaka Yorihiro, Griffin Berlstein, Kevin Laeufer, Adrian Sampson.
+<a rel="noopener nofollow noreferrer external" target="_blank" href="https://osda.ws/events/2024/date/accepted-papers"><em>Workshop on Open-Source Design Automation (OSDA) 2024</em></a></li>
+<li><a rel="noopener nofollow noreferrer external" target="_blank" href="https://dl.acm.org/doi/10.1145/3689790">Unifying Static and Dynamic Intermediate Languages for Accelerator Generators</a>
+Caleb Kim, Pai Li, Anshuman Mohan, Andrew Butt, Adrian Sampson, Rachit Nigam.
+<em>International Conference on Object-Oriented Programming, Systems, Languages, and Applications (OOPSLA) 2023</em></li>
+<li><a rel="noopener nofollow noreferrer external" target="_blank" href="https://dl.acm.org/doi/10.1145/3575693.3575717">Stepwise Debugging for Hardware Accelerators</a>
+Griffin Berlstein, Rachit Nigam, Chrisophe Gyurgyik, Adrian Sampson.
+<em>International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS) 2023</em></li>
+<li><a rel="noopener nofollow noreferrer external" target="_blank" href="https://griffinberlste.in/pdf/calyx-woset.pdf">A Toolkit for Designing Hardware DSLs</a>
+Griffin Berlstein, Rachit Nigam, Chrisophe Gyurgyik, Adrian Sampson.
+<em><a rel="noopener nofollow noreferrer external" target="_blank" href="https://woset-workshop.github.io/WOSET2021.html">Workshop on Open-Source EDA Technology (WOSET) 2021</a></em></li>
+<li><a rel="noopener nofollow noreferrer external" target="_blank" href="https://dl.acm.org/doi/10.1145/3445814.3446712">Calyx: A Language for Hardware Accelerator Generators</a>
+Rachit Nigam, Samuel Thomas, Zhijing Li, Adrian Sampson.
+<em>International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS) 2021</em></li>
+</ul>
+
+
+    </div>
+  </section>
+
+<footer>
+  &copy;&nbsp;2021
+<a href="https://docs.calyxir.org/contributors.html">
+The Calyx Team
+</a>
+&middot; Built using <a href="https://www.getzola.org/">Zola</a>
+</footer>
+</body>
+
+</html>
